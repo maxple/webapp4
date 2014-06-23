@@ -12,8 +12,8 @@ public class Contact {
     }
 
     public Contact(String type, String value) {
-        this.type = type;
-        this.value = value;
+          this.type = type;
+          this.value = value;
     }
 
     public String getType() {
