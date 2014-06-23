@@ -36,11 +36,4 @@ public class Resume {
         this.location = location;
     }
 
-    public Collection<Section> getSections() {
-        return sections;
-    }
-
-    public void setSections(Collection<Section> sections) {
-        this.sections = sections;
-    }
 }
