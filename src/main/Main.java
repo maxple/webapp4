@@ -1,26 +1,35 @@
 package main;
 
 import webapp.model.Resume;
+import webapp.model.Section;
+import webapp.model.TextSection;
 
 /**
  * User: gkislin
  * Date: 16.06.2014
  */
-public class Main {
-    /**
-     * First java program
-     *
-     * @param args args[0]: name
-     */
+abstract public class Main {
     public static void main(String[] args) {
-        Resume r = new Resume("Ivan Ivanov");
-        Resume r2 = new Resume();
-/*
-        r.setFullName("Ivan Ivanov");
-        System.out.println(r2.getFullName());
-*/
-        System.out.println(r2.getClass());
-        System.out.println(Resume.class);
-        System.out.println(Resume.class==r.getClass());
+        Resume r1 = new Resume();
+        Resume r2 = r1;
+        System.out.println(r1.equals(r2));
+
+        Section c = new TextSection("QUALIFICATION", null);
+        if (c instanceof TextSection) {
+            ((TextSection) c).getContent();
+        }
+
+        System.out.println(
+                r1.getFullName().equals("Ivan") ? "OK" : "NOK"
+        );
+
+        Integer i = 5;
+        System.out.println(i.intValue());
+        print(i);
+    }
+
+    static void print(int i) {
+        System.out.println(i);
     }
 }
+

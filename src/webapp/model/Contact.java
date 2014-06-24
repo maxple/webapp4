@@ -5,8 +5,9 @@ package webapp.model;
  * Date: 23.06.2014
  */
 public class Contact {
-    String type;
-    String value;
+
+    private String type;
+    private String value;
 
     public Contact() {
     }
