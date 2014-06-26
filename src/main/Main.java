@@ -1,35 +1,22 @@
 package main;
 
-import webapp.model.Resume;
-import webapp.model.Section;
-import webapp.model.TextSection;
+import webapp.model.*;
+
+import java.util.ArrayList;
 
 /**
  * User: gkislin
  * Date: 16.06.2014
  */
-abstract public class Main {
+public class Main {
     public static void main(String[] args) {
+
         Resume r1 = new Resume();
-        Resume r2 = r1;
-        System.out.println(r1.equals(r2));
 
-        Section c = new TextSection("QUALIFICATION", null);
-        if (c instanceof TextSection) {
-            ((TextSection) c).getContent();
-        }
+        r1.setData(DataType.UUID, "1");
+        r1.setData(DataType.FULL_NAME, "Ivan Ivanov");
+        r1.setData(DataType.HOME_PAGE, "www.ivan.ivanov.com");
+        r1.setData(DataType.CONTACTS, (ArrayList<Contact>) );
 
-        System.out.println(
-                r1.getFullName().equals("Ivan") ? "OK" : "NOK"
-        );
-
-        Integer i = 5;
-        System.out.println(i.intValue());
-        print(i);
-    }
-
-    static void print(int i) {
-        System.out.println(i);
     }
 }
-

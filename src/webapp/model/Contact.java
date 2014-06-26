@@ -1,35 +1,31 @@
 package webapp.model;
 
-/**
- * User: gkislin
- * Date: 23.06.2014
- */
 public class Contact {
 
-    private String type;
-    private String value;
+    private Object[] data;
 
     public Contact() {
+
+        for (DataType dt : DataType.values()) {
+
+            switch (dt) {
+
+                case TYPE:
+                case VALUE:
+
+                    data[dt.getN()] = new String();
+                    break;
+            }
+        }
     }
 
-    public Contact(String type, String value) {
-          this.type = type;
-          this.value = value;
+    public void setData(DataType dt, Object data) {
+
+        this.data[dt.getN()] = data;
     }
 
-    public String getType() {
-        return type;
-    }
+    public Object getData(DataType dt) {
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
+        return data[dt.getN()];
     }
 }
