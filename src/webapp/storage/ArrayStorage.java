@@ -16,49 +16,62 @@ public class ArrayStorage implements IStorage {
     @Override
     public String create(Resume r) {
 
-        for (i = 0; i < NUMBER; i++) if (ARRAY[i] == null) break;
+        for (i = 0; i < NUMBER; i++) {
 
-        if (i == NUMBER) return null;
+            if (ARRAY[i] == null) {
 
-        ARRAY[i] = r;
+                ARRAY[i] = r;
 
-        ARRAY[i].setData(Resume.DataType.UUID, Integer.toString(i));
+                ARRAY[i].setData(Resume.DataType.UUID, Integer.toString(i));
 
-        return Integer.toString(i);
+                return Integer.toString(i);
+            }
+        }
+
+        return null;
     }
 
     @Override
     public boolean update(String uuid, Resume r) {
 
-        for (i = 0; i < NUMBER; i++) if (ARRAY[i].getData(Resume.DataType.UUID) == uuid) break;
+        for (i = 0; i < NUMBER; i++) {
 
-        if (i == NUMBER) return false;
+            if (ARRAY[i].getData(Resume.DataType.UUID) == uuid) {
 
-        ARRAY[i] = r;
+                ARRAY[i] = r;
 
-        return true;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
     public Resume read(String uuid) {
 
-        for (i = 0; i < NUMBER; i++) if (ARRAY[i].getData(Resume.DataType.UUID) == uuid) break;
+        for (i = 0; i < NUMBER; i++) {
 
-        if (i == NUMBER) return null;
+            if (ARRAY[i].getData(Resume.DataType.UUID) == uuid) return ARRAY[i];
+        }
 
-        return ARRAY[i];
+        return null;
     }
 
     @Override
     public boolean delete(String uuid) {
 
-        for (i = 0; i < NUMBER; i++) if (ARRAY[i].getData(Resume.DataType.UUID) == uuid) break;
+        for (i = 0; i < NUMBER; i++) {
 
-        if (i == NUMBER) return false;
+            if (ARRAY[i].getData(Resume.DataType.UUID) == uuid) {
 
-        ARRAY[i] = null;
+                ARRAY[i] = null;
 
-        return true;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
