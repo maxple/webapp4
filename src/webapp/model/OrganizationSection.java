@@ -9,11 +9,11 @@ import java.util.Collection;
 public class OrganizationSection extends Section {
     private Collection<Organization> organizations;
 
-    public OrganizationSection(String type) {
+    public OrganizationSection(SectionType type) {
         super(type);
     }
 
-    public OrganizationSection(String type, Collection<Organization> organizations) {
+    public OrganizationSection(SectionType type, Collection<Organization> organizations) {
         super(type);
         this.organizations = organizations;
     }

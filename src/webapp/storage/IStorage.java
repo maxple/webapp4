@@ -10,7 +10,7 @@ import java.util.Collection;
  */
 public interface IStorage {
 
-    String create(Resume r);
+    void create(Resume r);
 
     void update(Resume r);
 

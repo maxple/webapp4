@@ -7,7 +7,7 @@ import java.util.Collection;
  * Date: 20.06.2014
  */
 public class TextSection extends Section {
-    public TextSection(String type, Collection<String> content) {
+    public TextSection(SectionType type, Collection<String> content) {
         super(type);
         this.content = content;
     }

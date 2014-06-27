@@ -2,6 +2,7 @@ package main;
 
 import webapp.model.Resume;
 import webapp.model.Section;
+import webapp.model.SectionType;
 import webapp.model.TextSection;
 
 /**
@@ -14,7 +15,7 @@ abstract public class Main {
         Resume r2 = r1;
         System.out.println(r1.equals(r2));
 
-        Section c = new TextSection("QUALIFICATION", null);
+        Section c = new TextSection(SectionType.QUALIFICATIONS, null);
         if (c instanceof TextSection) {
             ((TextSection) c).getContent();
         }

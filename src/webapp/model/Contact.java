@@ -6,22 +6,22 @@ package webapp.model;
  */
 public class Contact {
 
-    private String type;
+    private ContactType type;
     private String value;
 
     public Contact() {
     }
 
-    public Contact(String type, String value) {
+    public Contact(ContactType type, String value) {
           this.type = type;
           this.value = value;
     }
 
-    public String getType() {
+    public ContactType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(ContactType type) {
         this.type = type;
     }
 
