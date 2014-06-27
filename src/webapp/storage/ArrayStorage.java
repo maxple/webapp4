@@ -4,6 +4,7 @@ import webapp.model.Resume;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * User: gkislin
@@ -59,7 +60,16 @@ public class ArrayStorage implements IStorage {
     }
 
     @Override
+    // return all not null elements
     public Collection<Resume> getAll() {
-        return Arrays.asList(ARRAY);
+        Collection<Resume> col = Arrays.asList(ARRAY);
+        Iterator<Resume> it = col.iterator();
+        while (it.hasNext()) {
+            Resume r = it.next();
+            if (r == null) {
+                it.remove();
+            }
+        }
+        return col;
     }
 }

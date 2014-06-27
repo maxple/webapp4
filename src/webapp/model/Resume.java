@@ -1,6 +1,6 @@
 package webapp.model;
 
-import java.util.Collection;
+import java.util.Map;
 
 /**
  * User: gkislin
@@ -13,17 +13,19 @@ public class Resume {
     private String uuid;
     private String fullName;
     private String location;
-    private Collection<Contact> contacts;
-    private Collection<Section> sections;
+    private Map<ContactType, String> contacts;
+    private Map<SectionType, Section> sections;
 
     public Resume() {
     }
 
-    public Resume(String uuid, String fullName, String location, Collection<Contact> contacts, Collection<Section> sections) {
+    public Resume(String uuid, String fullName, String location) {
         this.fullName = fullName;
         this.location = location;
-        this.contacts = contacts;
-        this.sections = sections;
+    }
+
+    public String getContact(ContactType type) {
+        return contacts.get(type);
     }
 
     public String getUuid() {
@@ -50,20 +52,24 @@ public class Resume {
         this.location = location;
     }
 
-    public void addSection(Section s) {
-        this.sections.add(s);
+    public void addSection(SectionType type, String... values) {
+        addSection(type, new TextSection(values));
     }
 
-    public Collection<Section> getSections() {
-        return sections;
+    public void addSection(SectionType type, Organization... values) {
+        addSection(type, new OrganizationSection(values));
     }
 
-    public void addContact(Contact c) {
-        this.contacts.add(c);
+    public void addSection(SectionType type, Section s) {
+        sections.put(type, s);
     }
 
-    public Collection<Contact> getContacts() {
-        return contacts;
+    public Section getSections(SectionType type) {
+        return sections.get(type);
+    }
+
+    public void addContact(ContactType type, String value) {
+        contacts.put(type, value);
     }
 
     @Override

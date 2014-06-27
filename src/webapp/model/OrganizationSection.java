@@ -1,5 +1,6 @@
 package webapp.model;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -9,12 +10,7 @@ import java.util.Collection;
 public class OrganizationSection extends Section {
     private Collection<Organization> organizations;
 
-    public OrganizationSection(SectionType type) {
-        super(type);
-    }
-
-    public OrganizationSection(SectionType type, Collection<Organization> organizations) {
-        super(type);
-        this.organizations = organizations;
+    public OrganizationSection(Organization... organizations) {
+        this.organizations = Arrays.asList(organizations);
     }
 }
