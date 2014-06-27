@@ -1,9 +1,7 @@
 package main;
 
-import webapp.model.Resume;
-import webapp.model.Section;
-import webapp.model.SectionType;
-import webapp.model.TextSection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * User: gkislin
@@ -11,22 +9,12 @@ import webapp.model.TextSection;
  */
 abstract public class Main {
     public static void main(String[] args) {
-        Resume r1 = new Resume();
-        Resume r2 = r1;
-        System.out.println(r1.equals(r2));
-
-        Section c = new TextSection(SectionType.QUALIFICATIONS, null);
-        if (c instanceof TextSection) {
-            ((TextSection) c).getContent();
-        }
-
-        System.out.println(
-                r1.getFullName().equals("Ivan") ? "OK" : "NOK"
-        );
-
-        Integer i = 5;
-        System.out.println(i.intValue());
-        print(i);
+        Map<Name, Integer> map = new HashMap<>();
+        Name name = new Name("Ivan");
+        map.put(name, 5);
+        System.out.println(map.get(name));
+        name.name  = "Dmitry";
+        System.out.println(map.get(name));
     }
 
     static void print(int i) {
