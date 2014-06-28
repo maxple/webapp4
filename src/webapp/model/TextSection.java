@@ -8,11 +8,12 @@ import java.util.Collection;
  * Date: 20.06.2014
  */
 public class TextSection extends Section {
+
+    private Collection<String> content;
+
     public TextSection(String... content) {
         this.content = Arrays.asList(content);
     }
-
-    private Collection<String> content;
 
     public Collection<String> getContent() {
         return content;

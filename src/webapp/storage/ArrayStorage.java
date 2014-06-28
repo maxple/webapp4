@@ -29,9 +29,8 @@ public class ArrayStorage implements IStorage {
 
     @Override
     public void update(Resume r) {
-        String uuid = r.getUuid();
         for (int i = 0; i < NUMBER; i++) {
-            if (ARRAY[i] != null && ARRAY[i].getUuid().equals(uuid)) {
+            if (ARRAY[i] != null && ARRAY[i].getUuid().equals(r.getUuid())) {
                 ARRAY[i] = r;
                 return;
             }

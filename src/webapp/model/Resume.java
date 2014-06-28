@@ -8,8 +8,6 @@ import java.util.Map;
  */
 public class Resume {
 
-    public static String CONST = "CONSTANT";
-
     private String uuid;
     private String fullName;
     private String location;
@@ -20,6 +18,7 @@ public class Resume {
     }
 
     public Resume(String uuid, String fullName, String location) {
+        this.uuid = uuid;
         this.fullName = fullName;
         this.location = location;
     }

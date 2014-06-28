@@ -12,11 +12,11 @@ public interface IStorage {
 
     void create(Resume r);
 
-    boolean update(String uuid, Resume r);
+    void update(Resume r);
 
     Resume read(String uuid);
 
-    boolean delete(String uuid);
+    void delete(String uuid);
 
     Collection<Resume> getAll();
 }
