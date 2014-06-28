@@ -2,90 +2,74 @@ package webapp.storage;
 
 import webapp.model.Resume;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 
+/**
+ * User: gkislin
+ * Date: 24.06.2014
+ */
 public class ArrayStorage implements IStorage {
 
-    private int i;
-
     private static final int NUMBER = 100;
-
     private Resume[] ARRAY = new Resume[NUMBER];
 
     @Override
-    public String create(Resume r) {
-
-        for (i = 0; i < NUMBER; i++) {
-
+    public void create(Resume r) {
+        // insert in first not null array element
+        for (int i = 0; i < NUMBER; i++) {
             if (ARRAY[i] == null) {
-
                 ARRAY[i] = r;
-
-                ARRAY[i].setData(Resume.DataType.UUID, Integer.toString(i));
-
-                return Integer.toString(i);
+                return;
             }
         }
-
-        return null;
+        // TODO exception
     }
 
     @Override
-    public boolean update(String uuid, Resume r) {
-
-        for (i = 0; i < NUMBER; i++) {
-
-            if (ARRAY[i].getData(Resume.DataType.UUID) == uuid) {
-
+    public void update(Resume r) {
+        String uuid = r.getUuid();
+        for (int i = 0; i < NUMBER; i++) {
+            if (ARRAY[i] != null && ARRAY[i].getUuid().equals(uuid)) {
                 ARRAY[i] = r;
-
-                return true;
+                return;
             }
         }
-
-        return false;
+        // TODO exception
     }
 
     @Override
     public Resume read(String uuid) {
-
-        for (i = 0; i < NUMBER; i++) {
-
-            if (ARRAY[i].getData(Resume.DataType.UUID) == uuid) return ARRAY[i];
+        for (Resume r : ARRAY) {
+            if (r != null && r.getUuid().equals(uuid)) return r;
         }
-
+        // TODO exception
         return null;
     }
 
     @Override
-    public boolean delete(String uuid) {
-
-        for (i = 0; i < NUMBER; i++) {
-
-            if (ARRAY[i].getData(Resume.DataType.UUID) == uuid) {
-
+    public void delete(String uuid) {
+        for (int i = 0; i < NUMBER; i++) {
+            if (ARRAY[i] != null && ARRAY[i].getUuid().equals(uuid)) {
                 ARRAY[i] = null;
-
-                return true;
+                return;
             }
         }
-
-        return false;
+        // TODO exception
     }
 
     @Override
+    // return all not null elements
     public Collection<Resume> getAll() {
-
-        ArrayList<Resume> list = new ArrayList<Resume>();
-
-        for (i = 0; i < NUMBER; i++) {
-
-            if (ARRAY[i] == null) break;
-
-            list.add(ARRAY[i]);
+        Collection<Resume> col = Arrays.asList(ARRAY);
+        Iterator<Resume> it = col.iterator();
+        while (it.hasNext()) {
+            Resume r = it.next();
+            if (r == null) {
+                it.remove();
+            }
         }
-
-        return list;
+        return col;
     }
 }

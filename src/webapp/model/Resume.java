@@ -1,106 +1,111 @@
 package webapp.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Map;
 
+/**
+ * User: gkislin
+ * Date: 20.06.2014
+ */
 public class Resume {
 
-    public enum DataType {
+    public static String CONST = "CONSTANT";
 
-        UUID(0),
-        FULL_NAME(1),
-        LOCATION(2),
-        HOME_PAGE(3),
-        CONTACT(4),
-        SECTION(5);
-
-        private final int n;
-
-        DataType(int n) {
-            this.n = n;
-        }
-
-        public int getN() {
-            return n;
-        }
-    }
-
-    private Object[] data;
+    private String uuid;
+    private String fullName;
+    private String location;
+    private Map<ContactType, String> contacts;
+    private Map<SectionType, Section> sections;
 
     public Resume() {
-
-        for (DataType dt : DataType.values())
-            switch (dt) {
-
-                case UUID:
-                case FULL_NAME:
-                case LOCATION:
-                case HOME_PAGE:
-
-                    data[dt.getN()] = new String();
-                    break;
-
-                case CONTACT:
-
-                    data[dt.getN()] = new ArrayList<Contact>();
-                    break;
-
-                case SECTION:
-
-                    data[dt.getN()] = new ArrayList<Section>();
-                    break;
-            }
     }
 
-    public void setData(DataType dt, String data) {
-
-        switch (dt) {
-
-            case UUID:
-            case FULL_NAME:
-            case LOCATION:
-            case HOME_PAGE:
-
-                this.data[dt.getN()] = data;
-                break;
-        }
+    public Resume(String uuid, String fullName, String location) {
+        this.fullName = fullName;
+        this.location = location;
     }
 
-    public String getData(DataType dt) {
-
-        switch (dt) {
-
-            case UUID:
-            case FULL_NAME:
-            case LOCATION:
-            case HOME_PAGE:
-
-                return (String)this.data[dt.getN()];
-        }
-
-        return null;
+    public String getContact(ContactType type) {
+        return contacts.get(type);
     }
 
-    public void add(DataType dt, Object data) {
+    public String getUuid() {
+        return uuid;
+    }
 
-        switch (dt) {
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
-            case CONTACT:
+    public String getFullName() {
+        return fullName;
+    }
 
-                ((ArrayList<Contact>)(this.data[dt.getN()])).add((Contact)data);
-                break;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
-            case SECTION:
+    public String getLocation() {
+        return location;
+    }
 
-                ((ArrayList<Section>)(this.data[dt.getN()])).add((Section)data);
-                break;
-        }
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void addSection(SectionType type, String... values) {
+        addSection(type, new TextSection(values));
+    }
+
+    public void addSection(SectionType type, Organization... values) {
+        addSection(type, new OrganizationSection(values));
+    }
+
+    public void addSection(SectionType type, Section s) {
+        sections.put(type, s);
+    }
+
+    public Section getSections(SectionType type) {
+        return sections.get(type);
+    }
+
+    public void addContact(ContactType type, String value) {
+        contacts.put(type, value);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Resume resume = (Resume) o;
+
+        if (!contacts.equals(resume.contacts)) return false;
+        if (!fullName.equals(resume.fullName)) return false;
+        if (location != null ? !location.equals(resume.location) : resume.location != null) return false;
+        if (!sections.equals(resume.sections)) return false;
+        if (!uuid.equals(resume.uuid)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = uuid.hashCode();
+        result = 31 * result + fullName.hashCode();
+        result = 31 * result + (location != null ? location.hashCode() : 0);
+        result = 31 * result + contacts.hashCode();
+        result = 31 * result + sections.hashCode();
+        return result;
     }
 
     @Override
     public String toString() {
         return "Resume{" +
-                "data=" + Arrays.toString(data) +
+                "uuid='" + uuid + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", location='" + location + '\'' +
+                ", contacts=" + contacts +
+                ", sections=" + sections +
                 '}';
     }
 }

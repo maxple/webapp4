@@ -1,5 +1,6 @@
 package webapp.model;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -7,9 +8,8 @@ import java.util.Collection;
  * Date: 20.06.2014
  */
 public class TextSection extends Section {
-    public TextSection(String type, Collection<String> content) {
-        super(type);
-        this.content = content;
+    public TextSection(String... content) {
+        this.content = Arrays.asList(content);
     }
 
     private Collection<String> content;
