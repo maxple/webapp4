@@ -1,5 +1,6 @@
 package webapp.model;
 
+import java.util.EnumMap;
 import java.util.Map;
 
 /**
@@ -11,8 +12,8 @@ public class Resume {
     private String uuid;
     private String fullName;
     private String location;
-    private Map<ContactType, String> contacts;
-    private Map<SectionType, Section> sections;
+    private Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+    private Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
 
     public Resume() {
     }

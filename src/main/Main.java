@@ -1,7 +1,7 @@
 package main;
 
-import java.util.HashMap;
-import java.util.Map;
+import webapp.model.Resume;
+import webapp.storage.MapStorage;
 
 /**
  * User: gkislin
@@ -9,16 +9,15 @@ import java.util.Map;
  */
 abstract public class Main {
     public static void main(String[] args) {
-        Map<Name, Integer> map = new HashMap<>();
-        Name name = new Name("Ivan");
-        map.put(name, 5);
-        System.out.println(map.get(name));
-        name.name  = "Dmitry";
-        System.out.println(map.get(name));
-    }
 
-    static void print(int i) {
-        System.out.println(i);
+        MapStorage ms = new MapStorage();
+
+        ms.create(new Resume("1","Ivan Ivanov","Moscow"));
+        ms.create(new Resume("2","Petr Petrov","SPb"));
+        ms.create(new Resume("3","Sidor Sidorov","Ufa"));
+
+        for (Resume r : ms.getAll()) {
+            System.out.println(r);
+        }
     }
 }
-
