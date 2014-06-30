@@ -1,7 +1,8 @@
 package main;
 
-import java.util.HashMap;
-import java.util.Map;
+import webapp.model.Resume;
+import webapp.model.SectionType;
+import webapp.model.TextSection;
 
 /**
  * User: gkislin
@@ -9,12 +10,11 @@ import java.util.Map;
  */
 abstract public class Main {
     public static void main(String[] args) {
-        Map<Name, Integer> map = new HashMap<>();
-        Name name = new Name("Ivan");
-        map.put(name, 5);
-        System.out.println(map.get(name));
-        name.name  = "Dmitry";
-        System.out.println(map.get(name));
+        Resume r = new Resume();
+        r.addSection(SectionType.QUALIFICATIONS, "Java", "PHP");
+        TextSection ts = (TextSection) r.getSections(SectionType.QUALIFICATIONS);
+        ts.add("Python");
+        System.out.println(r.toString());
     }
 
     static void print(int i) {
