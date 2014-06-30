@@ -16,6 +16,11 @@ public class MapStorage implements IStorage {
     private Map<String, Resume> MAP = new HashMap<>();
 
     @Override
+    public void clear() {
+        MAP.clear();
+    }
+
+    @Override
     public void create(Resume r) {
         if (MAP.get(r.getUuid()) != null) {
             throw new WebAppException("Resume " + r.getUuid() + "already exist", r);
@@ -43,7 +48,7 @@ public class MapStorage implements IStorage {
     @Override
     public void delete(String uuid) {
         if (MAP.get(uuid) == null) {
-            throw new WebAppException("Resume " + uuid + "not exist", uuid);
+            throw new WebAppException("Resume " + uuid + " not exist", uuid);
         }
         MAP.remove(uuid);
     }

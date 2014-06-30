@@ -13,7 +13,12 @@ import java.util.Iterator;
 public class ArrayStorage implements IStorage {
 
     private static final int NUMBER = 100;
-    private Resume[] ARRAY = new Resume[NUMBER];
+    private final Resume[] ARRAY = new Resume[NUMBER];
+
+    @Override
+    public void clear() {
+       Arrays.fill(ARRAY, null);
+    }
 
     @Override
     public void create(Resume r) {
