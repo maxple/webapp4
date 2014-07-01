@@ -1,23 +1,20 @@
 package main;
 
-import java.util.HashMap;
-import java.util.Map;
+//import training;
 
-/**
- * User: gkislin
- * Date: 30.06.2014
- */
+import training.*;
+
 public class Main {
-    public static void main(String[] args) {
-        Map<Integer, String> m = new HashMap<Integer, String>() {
-            {
-                put(1, "1");
-                put(2, "2");
-            }
-        };
 
-        System.out.println(m.getClass());
-//        Class<Resume> c = Resume.class;
-//        Class<Resume> c2 = (new Resume()).getClass();
+    public static void main(String[] args) {
+
+        OuterClass outerClass = new OuterClass("qwe");
+
+        System.out.println(outerClass.getText());
+
+        OuterClass.InnerClass innerClass = new OuterClass.InnerClass("rty");
+
+        System.out.println(innerClass.getText());
+
     }
 }
