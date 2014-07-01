@@ -1,21 +1,23 @@
 package main;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * User: gkislin
- * Date: 16.06.2014
+ * Date: 30.06.2014
  */
-abstract public class Main {
+public class Main {
     public static void main(String[] args) {
-        String[] arr = new String[]{"1", "2", "3", "4"};
-        StringBuilder res = new StringBuilder();
-        for (String anArr : arr) {
-            res.append(anArr).append("-");
-        }
-        System.out.println(res.toString());
-    }
+        Map<Integer, String> m = new HashMap<Integer, String>() {
+            {
+                put(1, "1");
+                put(2, "2");
+            }
+        };
 
-    static void print(int i) {
-        System.out.println(i);
+        System.out.println(m.getClass());
+//        Class<Resume> c = Resume.class;
+//        Class<Resume> c2 = (new Resume()).getClass();
     }
 }
-
