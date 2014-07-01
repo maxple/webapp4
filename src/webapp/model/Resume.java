@@ -2,6 +2,7 @@ package webapp.model;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * User: gkislin
@@ -16,6 +17,10 @@ public class Resume {
     private Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
 
     public Resume() {
+    }
+
+    public Resume(String fullName, String location) {
+        this(UUID.randomUUID().toString(), fullName, location);
     }
 
     public Resume(String uuid, String fullName, String location) {

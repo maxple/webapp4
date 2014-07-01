@@ -10,6 +10,8 @@ import java.util.Collection;
  */
 public interface IStorage {
 
+    void clear();
+
     void create(Resume r);
 
     void update(Resume r);

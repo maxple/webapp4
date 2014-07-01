@@ -1,23 +1,23 @@
 package main;
 
-import webapp.model.Resume;
-import webapp.storage.MapStorage;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * User: gkislin
- * Date: 16.06.2014
+ * Date: 30.06.2014
  */
-abstract public class Main {
+public class Main {
     public static void main(String[] args) {
+        Map<Integer, String> m = new HashMap<Integer, String>() {
+            {
+                put(1, "1");
+                put(2, "2");
+            }
+        };
 
-        MapStorage ms = new MapStorage();
-
-        ms.create(new Resume("1","Ivan Ivanov","Moscow"));
-        ms.create(new Resume("2","Petr Petrov","SPb"));
-        ms.create(new Resume("3","Sidor Sidorov","Ufa"));
-
-        for (Resume r : ms.getAll()) {
-            System.out.println(r);
-        }
+        System.out.println(m.getClass());
+//        Class<Resume> c = Resume.class;
+//        Class<Resume> c2 = (new Resume()).getClass();
     }
 }
