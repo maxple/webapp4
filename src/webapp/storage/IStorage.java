@@ -12,7 +12,7 @@ public interface IStorage {
 
     void clear();
 
-    void create(Resume r);
+    void save(Resume r);
 
     void update(Resume r);
 

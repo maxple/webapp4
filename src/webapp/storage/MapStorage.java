@@ -21,9 +21,9 @@ public class MapStorage implements IStorage {
     }
 
     @Override
-    public void create(Resume r) {
+    public void save(Resume r) {
         if (MAP.get(r.getUuid()) != null) {
-            throw new WebAppException("Resume " + r.getUuid() + "already exist", r);
+            throw new WebAppException("Resume " + r.getUuid() + " already exists", r);
         }
         MAP.put(r.getUuid(), r);
     }
@@ -31,7 +31,7 @@ public class MapStorage implements IStorage {
     @Override
     public void update(Resume r) {
         if (MAP.get(r.getUuid()) == null) {
-            throw new WebAppException("Resume " + r.getUuid() + "not exist", r);
+            throw new WebAppException("Resume " + r.getUuid() + " does not exist", r);
         }
         MAP.put(r.getUuid(), r);
     }
@@ -40,7 +40,7 @@ public class MapStorage implements IStorage {
     public Resume read(String uuid) {
         Resume resume = MAP.get(uuid);
         if (resume == null) {
-            throw new WebAppException("Resume " + uuid + "not exist", uuid);
+            throw new WebAppException("Resume " + uuid + " does not exist", uuid);
         }
         return resume;
     }
@@ -48,7 +48,7 @@ public class MapStorage implements IStorage {
     @Override
     public void delete(String uuid) {
         if (MAP.get(uuid) == null) {
-            throw new WebAppException("Resume " + uuid + " not exist", uuid);
+            throw new WebAppException("Resume " + uuid + " does not exist", uuid);
         }
         MAP.remove(uuid);
     }

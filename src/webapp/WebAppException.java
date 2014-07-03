@@ -7,6 +7,7 @@ import webapp.model.Resume;
  * Date: 18.04.2014
  */
 public class WebAppException extends RuntimeException {
+
     private Resume resume = null;
     private String uuid = null;
 
