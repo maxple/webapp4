@@ -17,7 +17,7 @@ public class LocalClassExample {
 
     public static void validatePhoneNumber(String phoneNumber1, String phoneNumber2) {
 
-        int numberLength = 10;
+        //int numberLength = 10;
 
         // Valid in JDK 8 and later:
         // int numberLength = 10;
@@ -29,7 +29,7 @@ public class LocalClassExample {
             PhoneNumber(String phoneNumber){
                 // numberLength = 7;
                 String currentNumber = phoneNumber.replaceAll(regularExpression, "");
-                if (currentNumber.length() == numberLength)
+                if (currentNumber.length() == 10)
                     formattedPhoneNumber = currentNumber;
                 else
                     formattedPhoneNumber = null;
@@ -40,9 +40,9 @@ public class LocalClassExample {
             }
 
             // Valid in JDK 8 and later:
-            public void printOriginalNumbers() {
+            /*public void printOriginalNumbers() {
                 System.out.println("Original numbers are " + phoneNumber1 + " and " + phoneNumber2);
-            }
+            }*/
         }
 
         PhoneNumber myNumber1 = new PhoneNumber(phoneNumber1);
@@ -60,7 +60,7 @@ public class LocalClassExample {
         else
             System.out.println("Second number is " + myNumber2.getNumber());
 
-        myNumber1.printOriginalNumbers();
+        //myNumber1.printOriginalNumbers();
     }
 
     public static void main(String... args) {

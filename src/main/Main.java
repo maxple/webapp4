@@ -1,7 +1,5 @@
 package main;
 
-//import training;
-
 import training.*;
 
 public class Main {

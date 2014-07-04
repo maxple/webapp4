@@ -16,6 +16,11 @@ public class StorageTest {
     static final String FULL_NAME_2 = "Пётр Петров";
     static final String LOCATION = "СПб";
     static final Resume RESUME = new Resume(FULL_NAME_1, LOCATION);
+    static final Resume RESUME2 = new Resume(RESUME.getUuid(), FULL_NAME_1, LOCATION);
+    static final Resume RESUME3 = new Resume(RESUME.getUuid(), FULL_NAME_2, LOCATION);
+    static final Resume RESUME4 = new Resume(DUMMY_UUID, FULL_NAME_2, LOCATION);
+    static final Resume RESUME5 = new Resume(FULL_NAME_2, LOCATION);
+
     static IStorage storage;
 
     @Before
@@ -31,24 +36,23 @@ public class StorageTest {
 
     @Test
     public void testRead() throws Exception {
-        Assert.assertEquals(storage.read(RESUME.getUuid()), new Resume(RESUME.getUuid(), FULL_NAME_1, LOCATION));
+        Assert.assertEquals(storage.read(RESUME.getUuid()), RESUME2);
     }
 
     @Test(expected = WebAppException.class)
     public void testSameUuidSave() throws Exception {
-        storage.save(new Resume(RESUME.getUuid(), FULL_NAME_2, LOCATION));
+        storage.save(RESUME3);
     }
 
     @Test
     public void testUpdate() throws Exception {
-        final Resume r2 = new Resume(RESUME.getUuid(), FULL_NAME_2, LOCATION);
-        storage.update(r2);
-        Assert.assertEquals(storage.read(r2.getUuid()), r2);
+        storage.update(RESUME3);
+        Assert.assertEquals(storage.read(RESUME3.getUuid()), RESUME3);
     }
 
     @Test(expected = WebAppException.class)
     public void testNotExistUpdate() throws Exception {
-        storage.update(new Resume(DUMMY_UUID, FULL_NAME_2, LOCATION));
+        storage.update(RESUME4);
     }
 
     @Test(expected = WebAppException.class)
@@ -64,17 +68,15 @@ public class StorageTest {
 
     @Test
     public void testGetAll() throws Exception {
-        final Resume r2 = new Resume(DUMMY_UUID, FULL_NAME_1, LOCATION);
-        final Resume r3 = new Resume(FULL_NAME_2, LOCATION);
 
-        storage.save(r2);
-        storage.save(r3);
+        storage.save(RESUME4);
+        storage.save(RESUME5);
 
         Map<String, Resume> map = new HashMap<>();
 
         map.put(RESUME.getUuid(), RESUME);
-        map.put(r2.getUuid(), r2);
-        map.put(r3.getUuid(), r3);
+        map.put(RESUME4.getUuid(), RESUME4);
+        map.put(RESUME5.getUuid(), RESUME5);
 
         for(Resume r: storage.getAll()) {
             Assert.assertEquals(map.get(r.getUuid()), r);
