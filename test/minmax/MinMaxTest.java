@@ -31,13 +31,16 @@ public class MinMaxTest {
         MinMax.Pair p1 = new MinMax<>(ARRAY_INT).calculate();
         Assert.assertEquals(new MinMax<>(null).new Pair(-5, 123), p1);
 
-        // TODO
-        MinMaxStatic.Pair p2 = null;
-        Assert.assertEquals(null, p2);
+        MinMaxStatic.Pair p2 = new MinMaxStatic<>(ARRAY_INT).calculate();
+        Assert.assertEquals(new MinMaxStatic.Pair<>(-5, 123), p2);
     }
 
     @Test
     public void testStringCalculate() throws Exception {
-        //TODO
+        /*MinMax.Pair p1 = new MinMax<>(ARRAY_STRING).calculate();
+        Assert.assertEquals(new MinMax<>(null).new Pair("-5", "123"), p1);
+
+        MinMaxStatic.Pair p2 = new MinMaxStatic<>(ARRAY_STRING).calculate();
+        Assert.assertEquals(new MinMaxStatic.Pair<>("-5", "123"), p2);*/
     }
 }
