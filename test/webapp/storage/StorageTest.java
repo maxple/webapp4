@@ -98,16 +98,13 @@ public class StorageTest {
     public void testUpdate() throws Exception {
         Resume resume = new Resume(R2.getUuid(), "fullName_U2", "location_U2");
         storage.update(resume);
-        Resume loaded = storage.load(R2.getUuid());
-        assertEquals(resume, loaded);
+        assertEquals(resume, storage.load(R2.getUuid()));
     }
 
     @Test
     public void testGetAll() throws Exception {
         Object[] src = new Object[]{R1, R2, R3};
         Arrays.sort(src);
-        Object[] loaded = storage.getAll().toArray();
-        Arrays.sort(loaded);
-        assertArrayEquals(src, loaded);
+        assertArrayEquals(src, storage.getAllSorted().toArray());
     }
 }

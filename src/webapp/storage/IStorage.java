@@ -20,7 +20,7 @@ public interface IStorage {
 
     void delete(String uuid);
 
-    Collection<Resume> getAll();
+    Collection<Resume> getAllSorted();
 
     int size();
 }

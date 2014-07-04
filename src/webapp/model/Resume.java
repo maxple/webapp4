@@ -8,7 +8,7 @@ import java.util.UUID;
  * User: gkislin
  * Date: 20.06.2014
  */
-public class Resume {
+public class Resume implements Comparable<Resume> {
 
     public static final Resume EMPTY = new Resume();
 
@@ -114,5 +114,11 @@ public class Resume {
                 ", contacts=" + contacts +
                 ", sections=" + sections +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Resume o) {
+        int cmp = fullName.compareTo(o.fullName);
+        return cmp == 0 ? uuid.compareTo(o.uuid) : cmp;
     }
 }

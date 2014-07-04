@@ -1,10 +1,12 @@
 package webapp.storage;
 
+import webapp.WebAppException;
 import webapp.model.Resume;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * User: gkislin
@@ -17,19 +19,26 @@ public class ArrayStorage implements IStorage {
 
     @Override
     public void clear() {
-       Arrays.fill(ARRAY, null);
+        Arrays.fill(ARRAY, null);
     }
 
     @Override
     public void save(Resume r) {
         // insert in first not null array element
+        String uuid = r.getUuid();
+        for (int i = 0; i < NUMBER; i++) {
+            if (ARRAY[i] != null && ARRAY[i].getUuid().equals(uuid)) {
+                throw new WebAppException("Resume " + uuid + "already exist", r);
+            }
+        }
+
         for (int i = 0; i < NUMBER; i++) {
             if (ARRAY[i] == null) {
                 ARRAY[i] = r;
                 return;
             }
         }
-        // TODO exception
+        throw new WebAppException("Array is full");
     }
 
     @Override
@@ -41,7 +50,7 @@ public class ArrayStorage implements IStorage {
                 return;
             }
         }
-        // TODO exception
+        throw new WebAppException("Resume " + r.getUuid() + "not exist", r);
     }
 
     @Override
@@ -49,8 +58,7 @@ public class ArrayStorage implements IStorage {
         for (Resume r : ARRAY) {
             if (r != null && r.getUuid().equals(uuid)) return r;
         }
-        // TODO exception
-        return null;
+        throw new WebAppException("Resume " + uuid + "not exist", uuid);
     }
 
     @Override
@@ -61,20 +69,24 @@ public class ArrayStorage implements IStorage {
                 return;
             }
         }
-        // TODO exception
+        throw new WebAppException("Resume " + uuid + " not exist", uuid);
     }
 
     @Override
     // return all not null elements
-    public Collection<Resume> getAll() {
-        Collection<Resume> col = Arrays.asList(ARRAY);
-        Iterator<Resume> it = col.iterator();
-        while (it.hasNext()) {
-            Resume r = it.next();
-            if (r == null) {
-                it.remove();
+    public Collection<Resume> getAllSorted() {
+        List<Resume> list = new LinkedList<>();
+        Arrays.sort(ARRAY);
+        for (Resume r : ARRAY) {
+            if (r != null) {
+                list.add(r);
             }
         }
-        return col;
+        return list;
+    }
+
+    @Override
+    public int size() {
+        return ARRAY.length;
     }
 }
