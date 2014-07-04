@@ -21,7 +21,7 @@ public class ArrayStorage implements IStorage {
     }
 
     @Override
-    public void create(Resume r) {
+    public void save(Resume r) {
         // insert in first not null array element
         for (int i = 0; i < NUMBER; i++) {
             if (ARRAY[i] == null) {
@@ -45,7 +45,7 @@ public class ArrayStorage implements IStorage {
     }
 
     @Override
-    public Resume read(String uuid) {
+    public Resume load(String uuid) {
         for (Resume r : ARRAY) {
             if (r != null && r.getUuid().equals(uuid)) return r;
         }

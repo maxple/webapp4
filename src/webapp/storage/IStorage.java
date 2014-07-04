@@ -12,13 +12,15 @@ public interface IStorage {
 
     void clear();
 
-    void create(Resume r);
+    void save(Resume r);
 
     void update(Resume r);
 
-    Resume read(String uuid);
+    Resume load(String uuid);
 
     void delete(String uuid);
 
     Collection<Resume> getAll();
+
+    int size();
 }

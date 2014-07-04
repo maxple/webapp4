@@ -21,7 +21,7 @@ public class MapStorage implements IStorage {
     }
 
     @Override
-    public void create(Resume r) {
+    public void save(Resume r) {
         if (MAP.get(r.getUuid()) != null) {
             throw new WebAppException("Resume " + r.getUuid() + "already exist", r);
         }
@@ -37,7 +37,7 @@ public class MapStorage implements IStorage {
     }
 
     @Override
-    public Resume read(String uuid) {
+    public Resume load(String uuid) {
         Resume resume = MAP.get(uuid);
         if (resume == null) {
             throw new WebAppException("Resume " + uuid + "not exist", uuid);

@@ -5,11 +5,13 @@ package webapp.model;
  * Date: 07.02.14
  */
 public class Link {
+    public static final Link EMPTY = new Link();
 
     private String name;
     private String url;
 
     public Link() {
+        this("", null);
     }
 
     public Link(String name, String url) {

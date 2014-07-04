@@ -10,7 +10,7 @@ import java.util.UUID;
  */
 public class Resume {
 
-    public static String CONST = "CONSTANT";
+    public static final Resume EMPTY = new Resume();
 
     private String uuid;
     private String fullName;
