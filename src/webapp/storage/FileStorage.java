@@ -55,28 +55,29 @@ abstract public class FileStorage extends AbstractStorage {
         }
     }
 
+    private File getFile(String uuid) {
+        return new File(dir, uuid);
+    }
+
     @Override
     public void save(Resume r) {
         File file = getFile(r.getUuid());
-        if (file.exists()) {
-            //TODO
-        }
         try {
-            file.createNewFile();
+            if (!file.createNewFile()) {
+                throw new WebAppException("File " + file.getAbsolutePath() + " exists", r);
+            }
         } catch (IOException e) {
             throw new WebAppException("Couldn't write file " + file.getAbsolutePath(), r, e);
         }
         write(file, r);
     }
 
-    private File getFile(String uuid) {
-        return new File(dir, uuid);
-    }
-
     @Override
     public void update(Resume r) {
         File file = getFile(r.getUuid());
-        //TODO
+        if (!file.exists()) {
+            throw new WebAppException("File " + file.getAbsolutePath() + " does not exist", r);
+        }
         write(file, r);
     }
 
