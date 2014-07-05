@@ -16,9 +16,11 @@ public interface IStorage {
 
     void update(Resume r);
 
-    Resume read(String uuid);
+    Resume load(String uuid);
 
     void delete(String uuid);
 
-    Collection<Resume> getAll();
+    Collection<Resume> getAllSorted();
+
+    int size();
 }

@@ -7,6 +7,7 @@ import java.util.Date;
  * Date: 31.01.14
  */
 public class Period {
+    public static final Period EMPTY = new Period();
 
     private Date startDate;
     private Date endDate;

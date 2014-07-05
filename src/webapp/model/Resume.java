@@ -1,5 +1,7 @@
 package webapp.model;
 
+import webapp.util.Util;
+
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.UUID;
@@ -8,7 +10,9 @@ import java.util.UUID;
  * User: gkislin
  * Date: 20.06.2014
  */
-public class Resume {
+public class Resume implements Comparable<Resume> {
+
+    public static final Resume EMPTY = new Resume();
 
     private String uuid;
     private String fullName;
@@ -26,7 +30,7 @@ public class Resume {
     public Resume(String uuid, String fullName, String location) {
         this.uuid = uuid;
         this.fullName = fullName;
-        this.location = location;
+        setLocation(location);
     }
 
     public String getContact(ContactType type) {
@@ -54,7 +58,7 @@ public class Resume {
     }
 
     public void setLocation(String location) {
-        this.location = location;
+        this.location = Util.mask(location);
     }
 
     public void addSection(SectionType type, String... values) {
@@ -112,5 +116,15 @@ public class Resume {
                 ", contacts=" + contacts +
                 ", sections=" + sections +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Resume o) {
+        int cmp = fullName.compareTo(o.fullName);
+        return cmp == 0 ? uuid.compareTo(o.uuid) : cmp;
+    }
+
+    public Map<ContactType, String> getContacts() {
+        return contacts;
     }
 }

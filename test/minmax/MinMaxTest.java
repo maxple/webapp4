@@ -11,14 +11,11 @@ import java.util.Arrays;
  */
 public class MinMaxTest {
     private static final Integer[] ARRAY_INT;
-    private static final  String[] ARRAY_STRING;
+    private static final String[] ARRAY_STRING;
 
     static {
         ARRAY_INT = new Integer[]{2, 4, 7, 1, 4, 9, 123, -5};
-
         ARRAY_STRING = new String[]{"2", "4", "7", "1", "4", "9", "123", "-5"};
-
-
     }
 
     @Test
@@ -31,16 +28,16 @@ public class MinMaxTest {
         MinMax.Pair p1 = new MinMax<>(ARRAY_INT).calculate();
         Assert.assertEquals(new MinMax<>(null).new Pair(-5, 123), p1);
 
-        MinMaxStatic.Pair p2 = new MinMaxStatic<>(ARRAY_INT).calculate();
+        MinMaxStatic.Pair p2 = MinMaxStatic.calculate(ARRAY_INT);
         Assert.assertEquals(new MinMaxStatic.Pair<>(-5, 123), p2);
     }
 
     @Test
     public void testStringCalculate() throws Exception {
-        /*MinMax.Pair p1 = new MinMax<>(ARRAY_STRING).calculate();
-        Assert.assertEquals(new MinMax<>(null).new Pair("-5", "123"), p1);
+        MinMax.Pair p1 = new MinMax<>(ARRAY_STRING).calculate();
+        Assert.assertEquals(new MinMax<>(null).new Pair("-5", "9"), p1);
 
-        MinMaxStatic.Pair p2 = new MinMaxStatic<>(ARRAY_STRING).calculate();
-        Assert.assertEquals(new MinMaxStatic.Pair<>("-5", "123"), p2);*/
+        MinMaxStatic.Pair p2 = MinMaxStatic.calculate(ARRAY_STRING);
+        Assert.assertEquals(new MinMaxStatic.Pair<>("-5", "9"), p2);
     }
 }

@@ -7,15 +7,17 @@ import java.util.Collection;
  * Date: 05.02.14
  */
 public class Organization {
+    public static final Organization EMPTY = new Organization();
 
     private Link link;
     private Collection<Period> periods;
 
     public Organization() {
+        link = Link.EMPTY;
     }
 
     public Organization(String name, String url, Collection<Period> periods) {
-        this.link = new Link(name, url);
+        link = new Link(name, url);
         this.periods = periods;
     }
 

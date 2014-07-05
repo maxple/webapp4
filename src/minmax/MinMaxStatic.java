@@ -4,19 +4,15 @@ import java.util.Comparator;
 
 /**
  * User: gkislin
- * Date: 30.06.2014
+ * Date: 01.07.2014
  */
-public class MinMaxStatic<T> {
-
-    private T[] array;
-
-    public MinMaxStatic(T[] array) {
-        this.array = array;
-    }
+public class MinMaxStatic {
+    private static final Pair EMPTY = new Pair<>(null, null);
 
     public static class Pair<T> {
-        public T min;
-        public T max;
+
+        public final T min;
+        public final T max;
 
         public Pair(T min, T max) {
             this.min = min;
@@ -52,21 +48,18 @@ public class MinMaxStatic<T> {
         }
     }
 
-    public Pair calculate() {
-
-        // TODO check if T is instanceof Comparable<T>
-
+    public static <T> Pair<T> calculate(T[] array) {
         return calculate(new Comparator<T>() {
             @Override
             public int compare(T o1, T o2) {
                 return ((Comparable<T>) o1).compareTo(o2);
             }
-        });
+        }, array);
     }
 
-    public Pair calculate(Comparator<T> cmp) {
+    public static <T> Pair<T> calculate(Comparator<T> cmp, T[] array) {
         if (array.length == 0) {
-            return new Pair(null, null);
+            return (Pair<T>) EMPTY;
         }
         T min = array[0], max = array[0];
         for (T e : array) {
@@ -77,6 +70,6 @@ public class MinMaxStatic<T> {
                 min = e;
             }
         }
-        return new Pair(min, max);
+        return new Pair<>(min, max);
     }
 }
