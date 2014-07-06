@@ -25,11 +25,28 @@ public abstract class Section<T> {
         return "Section( " + values +" )";
     }
 
-    public Collection<T> getContent() {
+    public Collection<T> getValues() {
         return values;
     }
 
-    public void setContent(Collection<T> content) {
-        this.values = content;
+    public void setValues(Collection<T> values) {
+        this.values = values;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Section section = (Section) o;
+
+        if (values != null ? !values.equals(section.values) : section.values != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return values != null ? values.hashCode() : 0;
     }
 }

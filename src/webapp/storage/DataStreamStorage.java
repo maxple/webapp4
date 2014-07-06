@@ -1,14 +1,9 @@
 package webapp.storage;
 
-import webapp.model.ContactType;
-import webapp.model.Resume;
-import webapp.model.Section;
-import webapp.model.SectionType;
+import webapp.model.*;
 
 import java.io.*;
-import java.util.EnumMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * User: gkislin
@@ -23,23 +18,62 @@ public class DataStreamStorage extends FileStorage {
     @Override
     protected void doWrite(FileOutputStream fos, Resume resume) throws IOException {
         try (DataOutputStream dos = new DataOutputStream(fos)) {
-            dos.writeUTF(resume.getFullName());
-            dos.writeUTF(resume.getLocation());
+            writeStr(dos, resume.getFullName());
+            writeStr(dos, resume.getLocation());
 
             Map<ContactType, String> contacts = resume.getContacts();
             dos.writeInt(contacts.size());
-            for(Map.Entry<ContactType, String> entry: contacts.entrySet()) {
-                dos.writeUTF(entry.getKey().name());
-                dos.writeUTF(entry.getValue());
+
+            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
+                writeStr(dos, entry.getKey().name());
+                writeStr(dos, entry.getValue());
             }
 
-//            Map<SectionType, Section> sections = resume.getSections();
-//            dos.writeInt(sections.size());
-//            for(Map.Entry<SectionType, Section> entry: sections.entrySet()) {
-//                dos.writeUTF(entry.getKey().getTitle());
-//                dos.writeUTF(entry.getValue());
-//            }
-            // TODO
+            Section section;
+            String sectionClassSimpleName;
+            Collection sectionValues;
+            Collection<Period> periods;
+
+            Map<SectionType, Section> sections = resume.getSections();
+            dos.writeInt(sections.size());
+
+            for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
+
+                section = entry.getValue();
+                sectionClassSimpleName = section.getClass().getSimpleName();
+
+                writeStr(dos, sectionClassSimpleName);
+                writeStr(dos, entry.getKey().name());
+
+                sectionValues = section.getValues();
+
+                dos.writeInt(sectionValues.size());
+
+                if (TextSection.class.getSimpleName().equals(sectionClassSimpleName)) {
+                    for (String val : (Collection<String>) sectionValues) {
+                        writeStr(dos, val);
+                    }
+                } else {
+                    for (Organization val : (Collection<Organization>) sectionValues) {
+                        writeStr(dos, val.getLink().getName());
+                        writeStr(dos, val.getLink().getUrl());
+
+                        periods = val.getPeriods();
+
+                        dos.writeInt(periods.size());
+
+                        for (Period p : periods) {
+                            dos.writeInt(p.getStartYear());
+                            dos.writeInt(p.getStartMonth());
+                            dos.writeInt(p.getEndYear());
+                            dos.writeInt(p.getEndMonth());
+                            writeStr(dos, p.getPosition());
+                            writeStr(dos, p.getContent());
+                        }
+
+                    }
+                }
+            }
         }
     }
 
@@ -47,17 +81,84 @@ public class DataStreamStorage extends FileStorage {
     protected Resume doRead(FileInputStream fis) throws IOException {
         Resume r = new Resume();
         try (DataInputStream dis = new DataInputStream(fis)) {
-            r.setFullName(dis.readUTF());
-            r.setLocation(dis.readUTF());
+            r.setFullName(readStr(dis));
+            r.setLocation(readStr(dis));
 
-            final int n = dis.readInt();
-            for(int i = 0; i < n; i++) {
-                ContactType contact = ContactType.valueOf(dis.readUTF());
-                r.addContact(contact, dis.readUTF());
+            Collection<String> sectionStringValues;
+            Collection<Organization> sectionOrganizationValues;
+            Collection<Period> periods;
+
+            boolean isTextSection;
+            ContactType contactType;
+            SectionType sectionType;
+            String sectionClassSimpleName, organizationName, organizationUrl, position, content;
+            int sectionValuesSize, periodsSize, startYear, startMonth, endYear, endMonth;
+
+            final int contactsSize = dis.readInt();
+            for (int i = 0; i < contactsSize; i++) {
+                contactType = ContactType.valueOf(readStr(dis));
+                r.addContact(contactType, readStr(dis));
             }
 
-            // TODO
+            final int sectionsSize = dis.readInt();
+            for (int i = 0; i < sectionsSize; i++) {
+
+                sectionClassSimpleName = readStr(dis);
+
+                isTextSection = TextSection.class.getSimpleName().equals(sectionClassSimpleName);
+
+                sectionStringValues = new ArrayList<>();
+                sectionOrganizationValues = new ArrayList<>();
+
+                sectionType = SectionType.valueOf(readStr(dis));
+
+                sectionValuesSize = dis.readInt();
+
+                for (int j = 0; j < sectionValuesSize; j++) {
+
+                    if (isTextSection) {
+                        sectionStringValues.add(readStr(dis));
+                    } else {
+
+                        organizationName = readStr(dis);
+                        organizationUrl = readStr(dis);
+
+                        periods = new ArrayList<>();
+
+                        periodsSize = dis.readInt();
+
+                        for (int k = 0; k < periodsSize; k++) {
+
+                            startYear = dis.readInt();
+                            startMonth = dis.readInt();
+                            endYear = dis.readInt();
+                            endMonth = dis.readInt();
+                            position = readStr(dis);
+                            content = readStr(dis);
+
+                            periods.add(new Period(startYear, startMonth, endYear, endMonth, position, content));
+                        }
+
+                        sectionOrganizationValues.add(new Organization(organizationName, organizationUrl, periods.toArray(new Period[periods.size()])));
+                    }
+                }
+
+                if (isTextSection) {
+                    r.addSection(sectionType, sectionStringValues.toArray(new String[sectionStringValues.size()]));
+                } else {
+                    r.addSection(sectionType, sectionOrganizationValues.toArray(new Organization[sectionOrganizationValues.size()]));
+                }
+            }
         }
         return r;
+    }
+
+    private void writeStr(DataOutputStream dos, String str) throws IOException {
+        dos.writeUTF(str == null ? "null" : str);
+    }
+
+    private String readStr(DataInputStream dis) throws IOException {
+        String str = dis.readUTF();
+        return str.equals("null") ? null : str;
     }
 }

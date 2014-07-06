@@ -63,4 +63,32 @@ public class Period {
                 ", content='" + content + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Period period = (Period) o;
+
+        if (endMonth != period.endMonth) return false;
+        if (endYear != period.endYear) return false;
+        if (startMonth != period.startMonth) return false;
+        if (startYear != period.startYear) return false;
+        if (content != null ? !content.equals(period.content) : period.content != null) return false;
+        if (position != null ? !position.equals(period.position) : period.position != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = startYear;
+        result = 31 * result + startMonth;
+        result = 31 * result + endYear;
+        result = 31 * result + endMonth;
+        result = 31 * result + (position != null ? position.hashCode() : 0);
+        result = 31 * result + (content != null ? content.hashCode() : 0);
+        return result;
+    }
 }

@@ -42,4 +42,24 @@ public class Organization {
                 ", periods=" + periods +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Organization that = (Organization) o;
+
+        if (link != null ? !link.equals(that.link) : that.link != null) return false;
+        if (periods != null ? !periods.equals(that.periods) : that.periods != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = link != null ? link.hashCode() : 0;
+        result = 31 * result + (periods != null ? periods.hashCode() : 0);
+        return result;
+    }
 }
