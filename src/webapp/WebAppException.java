@@ -19,6 +19,11 @@ public class WebAppException extends RuntimeException {
         super(message, e);
     }
 
+    public WebAppException(String message, String uuid) {
+        super(message);
+        this.uuid = uuid;
+    }
+
     public WebAppException(String message, Resume resume) {
         super(message);
         this.resume = resume;
@@ -27,11 +32,6 @@ public class WebAppException extends RuntimeException {
     public WebAppException(String message, Resume resume, Throwable e) {
         super(message, e);
         this.resume = resume;
-    }
-
-    public WebAppException(String message, String uuid) {
-        super(message);
-        this.uuid = uuid;
     }
 
     public Resume getResume() {

@@ -8,6 +8,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * User: gkislin
@@ -17,11 +21,14 @@ abstract public class FileStorage extends AbstractStorage {
     private File dir;
 
     public FileStorage(String path) {
+        super(Logger.getLogger(FileStorage.class.getName()));
         this.dir = new File(path);
         if (!dir.isDirectory() || !dir.canWrite()) {
             throw new IllegalArgumentException("'" + path + "' is not directory or is not writable");
         }
     }
+
+    protected abstract void doWrite(FileOutputStream fos, Resume resume) throws IOException;
 
     protected void write(File file, Resume resume){
         try {
@@ -31,7 +38,6 @@ abstract public class FileStorage extends AbstractStorage {
         }
     }
 
-    protected abstract void doWrite(FileOutputStream fos, Resume resume) throws IOException;
     protected abstract Resume doRead(FileInputStream fis) throws IOException;
 
     protected Resume read(File file){
@@ -45,7 +51,7 @@ abstract public class FileStorage extends AbstractStorage {
     }
 
     @Override
-    public void clear() {
+    public void doClear() {
         File[] files = dir.listFiles();
         if (files == null) return;
         for (File file : files) {
@@ -60,7 +66,7 @@ abstract public class FileStorage extends AbstractStorage {
     }
 
     @Override
-    public void save(Resume r) {
+    public void doSave(Resume r) {
         File file = getFile(r.getUuid());
         try {
             if (!file.createNewFile()) {
@@ -73,7 +79,7 @@ abstract public class FileStorage extends AbstractStorage {
     }
 
     @Override
-    public void update(Resume r) {
+    public void doUpdate(Resume r) {
         File file = getFile(r.getUuid());
         if (!file.exists()) {
             throw new WebAppException("File " + file.getAbsolutePath() + " does not exist", r);
@@ -82,30 +88,42 @@ abstract public class FileStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume load(String uuid) {
+    public Resume doLoad(String uuid) {
         File file = getFile(uuid);
-        //TODO
+        if (!file.exists()) {
+            throw new WebAppException("File " + file.getAbsolutePath() + " does not exist", uuid);
+        }
         return read(file);
     }
 
     @Override
-    public void delete(String uuid) {
+    public void doDelete(String uuid) {
         File file = getFile(uuid);
-        //TODO
-        if(file.delete()){
+        if (!file.exists()) {
+            throw new WebAppException("File " + file.getAbsolutePath() + " does not exist", uuid);
+        }
+        if(!file.delete()){
             throw new WebAppException("File " + file.getAbsolutePath() + " cannot be deleted");
         }
     }
 
     @Override
-    public Collection<Resume> getAllSorted() {
-        // TODO
-        return null;
+    public Collection<Resume> doGetAllSorted() {
+        List<Resume> list = new LinkedList<>();
+        File[] files = dir.listFiles();
+        if (files == null) return null;
+        for(File file: files) {
+            if (!file.exists()) {
+                throw new WebAppException("File " + file.getAbsolutePath() + " does not exist");
+            }
+            list.add(read(file));
+        }
+        Collections.sort(list);
+        return list;
     }
 
     @Override
-    public int size() {
-        // TODO;
-        return 0;
+    public int doGetSize() {
+        return getAllSorted().size();
     }
 }

@@ -1,5 +1,6 @@
 package webapp.storage;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -17,7 +18,6 @@ import static org.junit.Assert.assertEquals;
  */
 public class StorageTest {
     static IStorage storage;
-
 
     private static Resume R1, R2, R3;
 
@@ -54,10 +54,15 @@ public class StorageTest {
         storage.save(R3);
     }
 
+    @After
+    public void tearDown() throws Exception {
+        storage.clear();
+    }
+
     @Test
     public void testClear() throws Exception {
         storage.clear();
-        assertEquals(0, storage.size());
+        assertEquals(0, storage.getSize());
     }
 
     @Test
@@ -70,11 +75,11 @@ public class StorageTest {
     @Test
     public void testDelete() throws Exception {
         storage.delete(R2.getUuid());
-        assertEquals(2, storage.size());
+        assertEquals(2, storage.getSize());
         storage.delete(R1.getUuid());
-        assertEquals(1, storage.size());
+        assertEquals(1, storage.getSize());
         storage.delete(R3.getUuid());
-        assertEquals(0, storage.size());
+        assertEquals(0, storage.getSize());
     }
 
     @Test(expected = WebAppException.class)
@@ -89,8 +94,7 @@ public class StorageTest {
 
     @Test(expected = WebAppException.class)
     public void testUpdateMissed() throws Exception {
-        Resume resume = new Resume("dummy", "fullName_U1", "location_U1");
-        storage.update(resume);
+        storage.update(new Resume("dummy", "fullName_U1", "location_U1"));
     }
 
     @Test

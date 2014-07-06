@@ -10,20 +10,20 @@ import java.util.logging.Logger;
  * User: gkislin
  * Date: 24.06.2014
  */
-public class MapStorage implements IStorage {
-    public static final Logger LOGGER = Logger.getLogger(MapStorage.class.getName());
-
+public class MapStorage extends AbstractStorage {
     private Map<String, Resume> MAP = new HashMap<>();
 
+    public MapStorage() {
+        super(Logger.getLogger(MapStorage.class.getName()));
+    }
+
     @Override
-    public void clear() {
-        LOGGER.info("Delete all resumes.");
+    public void doClear() {
         MAP.clear();
     }
 
     @Override
-    public void save(Resume r) {
-        LOGGER.info("Save resume with uuid=" + r.getUuid());
+    public void doSave(Resume r) {
         if (MAP.get(r.getUuid()) != null) {
             throw new WebAppException("Resume " + r.getUuid() + "already exist", r);
         }
@@ -31,8 +31,7 @@ public class MapStorage implements IStorage {
     }
 
     @Override
-    public void update(Resume r) {
-        LOGGER.info("Update resume with " + r.getUuid());
+    public void doUpdate(Resume r) {
         if (MAP.get(r.getUuid()) == null) {
             throw new WebAppException("Resume " + r.getUuid() + "not exist", r);
         }
@@ -40,8 +39,7 @@ public class MapStorage implements IStorage {
     }
 
     @Override
-    public Resume load(String uuid) {
-        LOGGER.info("Load resume with uuid=" + uuid);
+    public Resume doLoad(String uuid) {
         Resume resume = MAP.get(uuid);
         if (resume == null) {
             throw new WebAppException("Resume " + uuid + "not exist", uuid);
@@ -50,8 +48,7 @@ public class MapStorage implements IStorage {
     }
 
     @Override
-    public void delete(String uuid) {
-        LOGGER.info("Delete resume with uuid=" + uuid);
+    public void doDelete(String uuid) {
         if (MAP.get(uuid) == null) {
             throw new WebAppException("Resume " + uuid + " not exist", uuid);
         }
@@ -59,15 +56,14 @@ public class MapStorage implements IStorage {
     }
 
     @Override
-    public Collection<Resume> getAllSorted() {
-        LOGGER.info("getAllSorted");
+    public Collection<Resume> doGetAllSorted() {
         List<Resume> list = new ArrayList<>(MAP.values());
         Collections.sort(list);
         return list;
     }
 
     @Override
-    public int size() {
+    public int doGetSize() {
         return MAP.size();
     }
 }

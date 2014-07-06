@@ -3,27 +3,29 @@ package webapp.storage;
 import webapp.WebAppException;
 import webapp.model.Resume;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * User: gkislin
  * Date: 24.06.2014
  */
-public class ArrayStorage implements IStorage {
+public class ArrayStorage extends AbstractStorage {
 
     private static final int NUMBER = 100;
     private final Resume[] ARRAY = new Resume[NUMBER];
 
+    public ArrayStorage() {
+        super(Logger.getLogger(ArrayStorage.class.getName()));
+    }
+
     @Override
-    public void clear() {
+    public void doClear() {
         Arrays.fill(ARRAY, null);
     }
 
     @Override
-    public void save(Resume r) {
+    public void doSave(Resume r) {
         // insert in first not null array element
         String uuid = r.getUuid();
         for (int i = 0; i < NUMBER; i++) {
@@ -42,7 +44,7 @@ public class ArrayStorage implements IStorage {
     }
 
     @Override
-    public void update(Resume r) {
+    public void doUpdate(Resume r) {
         String uuid = r.getUuid();
         for (int i = 0; i < NUMBER; i++) {
             if (ARRAY[i] != null && ARRAY[i].getUuid().equals(uuid)) {
@@ -54,7 +56,7 @@ public class ArrayStorage implements IStorage {
     }
 
     @Override
-    public Resume load(String uuid) {
+    public Resume doLoad(String uuid) {
         for (Resume r : ARRAY) {
             if (r != null && r.getUuid().equals(uuid)) return r;
         }
@@ -62,7 +64,7 @@ public class ArrayStorage implements IStorage {
     }
 
     @Override
-    public void delete(String uuid) {
+    public void doDelete(String uuid) {
         for (int i = 0; i < NUMBER; i++) {
             if (ARRAY[i] != null && ARRAY[i].getUuid().equals(uuid)) {
                 ARRAY[i] = null;
@@ -74,19 +76,19 @@ public class ArrayStorage implements IStorage {
 
     @Override
     // return all not null elements
-    public Collection<Resume> getAllSorted() {
+    public Collection<Resume> doGetAllSorted() {
         List<Resume> list = new LinkedList<>();
-        Arrays.sort(ARRAY);
         for (Resume r : ARRAY) {
             if (r != null) {
                 list.add(r);
             }
         }
+        Collections.sort(list);
         return list;
     }
 
     @Override
-    public int size() {
-        return ARRAY.length;
+    public int doGetSize() {
+        return getAllSorted().size();
     }
 }
