@@ -3,6 +3,8 @@ package webapp.storage;
 import webapp.model.Resume;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -21,7 +23,7 @@ abstract public class AbstractStorage implements IStorage {
     protected abstract void doUpdate(Resume r);
     protected abstract Resume doLoad(String uuid);
     protected abstract void doDelete(String uuid);
-    protected abstract Collection<Resume> doGetAllSorted();
+    protected abstract Collection<Resume> doGetAll();
     protected abstract int doGetSize();
 
     @Override
@@ -57,7 +59,9 @@ abstract public class AbstractStorage implements IStorage {
     @Override
     public Collection<Resume> getAllSorted() {
         LOGGER.info("getAllSorted");
-        return doGetAllSorted();
+        List<Resume> list = (List<Resume>) doGetAll();
+        Collections.sort(list);
+        return list;
     }
 
     @Override

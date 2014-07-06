@@ -33,10 +33,6 @@ public class Resume implements Comparable<Resume> {
         setLocation(location);
     }
 
-    public String getContact(ContactType type) {
-        return contacts.get(type);
-    }
-
     public String getUuid() {
         return uuid;
     }
@@ -61,6 +57,22 @@ public class Resume implements Comparable<Resume> {
         this.location = Util.mask(location);
     }
 
+    public String getContact(ContactType type) {
+        return contacts.get(type);
+    }
+
+    public void addContact(ContactType type, String value) {
+        contacts.put(type, value);
+    }
+
+    public Map<ContactType, String> getContacts() {
+        return contacts;
+    }
+
+    public void addSection(SectionType type, Section s) {
+        sections.put(type, s);
+    }
+
     public void addSection(SectionType type, String... values) {
         addSection(type, new TextSection(values));
     }
@@ -69,16 +81,12 @@ public class Resume implements Comparable<Resume> {
         addSection(type, new OrganizationSection(values));
     }
 
-    public void addSection(SectionType type, Section s) {
-        sections.put(type, s);
-    }
-
-    public Section getSections(SectionType type) {
+    public Section getSection(SectionType type) {
         return sections.get(type);
     }
 
-    public void addContact(ContactType type, String value) {
-        contacts.put(type, value);
+    public Map<SectionType, Section> getSections() {
+        return sections;
     }
 
     @Override
@@ -122,9 +130,5 @@ public class Resume implements Comparable<Resume> {
     public int compareTo(Resume o) {
         int cmp = fullName.compareTo(o.fullName);
         return cmp == 0 ? uuid.compareTo(o.uuid) : cmp;
-    }
-
-    public Map<ContactType, String> getContacts() {
-        return contacts;
     }
 }

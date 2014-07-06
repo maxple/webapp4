@@ -24,6 +24,7 @@ public class DataStreamStorage extends FileStorage {
             dos.writeUTF(resume.getFullName());
             dos.writeUTF(resume.getLocation());
             Map<ContactType, String> contacts = resume.getContacts();
+            // TODO
         } finally {
             if (dos != null) {
                 dos.close();
@@ -37,6 +38,7 @@ public class DataStreamStorage extends FileStorage {
         try (DataInputStream dis = new DataInputStream(fis)) {
             r.setFullName(dis.readUTF());
             r.setLocation(dis.readUTF());
+            // TODO
         }
         return r;
     }

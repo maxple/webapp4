@@ -76,14 +76,13 @@ public class ArrayStorage extends AbstractStorage {
 
     @Override
     // return all not null elements
-    public Collection<Resume> doGetAllSorted() {
+    public Collection<Resume> doGetAll() {
         List<Resume> list = new LinkedList<>();
         for (Resume r : ARRAY) {
             if (r != null) {
                 list.add(r);
             }
         }
-        Collections.sort(list);
         return list;
     }
 

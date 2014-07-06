@@ -108,7 +108,7 @@ abstract public class FileStorage extends AbstractStorage {
     }
 
     @Override
-    public Collection<Resume> doGetAllSorted() {
+    public Collection<Resume> doGetAll() {
         List<Resume> list = new LinkedList<>();
         File[] files = dir.listFiles();
         if (files == null) return null;
@@ -118,7 +118,6 @@ abstract public class FileStorage extends AbstractStorage {
             }
             list.add(read(file));
         }
-        Collections.sort(list);
         return list;
     }
 
