@@ -1,5 +1,7 @@
 package webapp.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -16,9 +18,9 @@ public class Organization {
         link = Link.EMPTY;
     }
 
-    public Organization(String name, String url, Collection<Period> periods) {
+    public Organization(String name, String url, Period... periods) {
         link = new Link(name, url);
-        this.periods = periods;
+        this.periods = new ArrayList<>(Arrays.asList(periods));
     }
 
     public void add(Period p) {
@@ -31,5 +33,13 @@ public class Organization {
 
     public Collection<Period> getPeriods() {
         return periods;
+    }
+
+    @Override
+    public String toString() {
+        return "Organization{" +
+                "link=" + link +
+                ", periods=" + periods +
+                '}';
     }
 }

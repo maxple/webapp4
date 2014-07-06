@@ -9,27 +9,39 @@ import java.util.Date;
 public class Period {
     public static final Period EMPTY = new Period();
 
-    private Date startDate;
-    private Date endDate;
+    private int startYear;
+    private int startMonth;
+    private int endYear;
+    private int endMonth;
     private String position;
     private String content;
 
     public Period() {
     }
 
-    public Period(Date startDate, Date endDate, String position, String content) {
-        this.startDate = startDate;
-        this.endDate = endDate;
+    public Period(int startYear, int startMonth, int endYear, int endMonth, String position, String content) {
+        this.startYear = startYear;
+        this.startMonth = startMonth;
+        this.endYear = endYear;
+        this.endMonth = endMonth;
         this.position = position;
         this.content = content;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public int getStartYear() {
+        return startYear;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public int getStartMonth() {
+        return startMonth;
+    }
+
+    public int getEndYear() {
+        return endYear;
+    }
+
+    public int getEndMonth() {
+        return endMonth;
     }
 
     public String getPosition() {
@@ -40,4 +52,15 @@ public class Period {
         return content;
     }
 
+    @Override
+    public String toString() {
+        return "Period{" +
+                "startYear=" + startYear +
+                ", startMonth=" + startMonth +
+                ", endYear=" + endYear +
+                ", endMonth=" + endMonth +
+                ", position='" + position + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }
