@@ -14,6 +14,7 @@ public abstract class Section<T> {
     public Section(T[] values) {
         this.values = new ArrayList<>(Arrays.asList(values));
     }
+
     public void add(T value) {
         values.add(value);
     }
@@ -27,6 +28,9 @@ public abstract class Section<T> {
         return values;
     }
 
+    public Collection<T> getValues() {
+        return values;
+    }
 
     public void setContent(Collection<T> content) {
         this.values = content;

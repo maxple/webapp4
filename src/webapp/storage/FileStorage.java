@@ -13,7 +13,7 @@ import java.util.Collection;
  * User: gkislin
  * Date: 04.07.2014
  */
-abstract public class FileStorage extends AbstractStorage {
+abstract public class FileStorage implements IStorage {
     private File dir;
 
     public FileStorage(String path) {

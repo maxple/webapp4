@@ -73,7 +73,7 @@ public class Resume implements Comparable<Resume> {
         sections.put(type, s);
     }
 
-    public Section getSections(SectionType type) {
+    public Section getSection(SectionType type) {
         return sections.get(type);
     }
 
@@ -126,5 +126,9 @@ public class Resume implements Comparable<Resume> {
 
     public Map<ContactType, String> getContacts() {
         return contacts;
+    }
+
+    public Map<SectionType, Section> getSections() {
+        return sections;
     }
 }
