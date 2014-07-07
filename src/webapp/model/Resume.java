@@ -2,6 +2,10 @@ package webapp.model;
 
 import webapp.util.Util;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.UUID;
@@ -10,7 +14,10 @@ import java.util.UUID;
  * User: gkislin
  * Date: 20.06.2014
  */
-public class Resume implements Comparable<Resume> {
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Resume implements Comparable<Resume>, Serializable {
+    static final long serialVersionUID = 1L;
 
     public static final Resume EMPTY = new Resume();
 

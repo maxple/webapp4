@@ -1,11 +1,16 @@
 package webapp.model;
 
+import webapp.util.DateUtil;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.Date;
 
 /**
  * User: gkislin
  * Date: 31.01.14
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Period {
     public static final Period EMPTY = new Period();
 
@@ -22,6 +27,13 @@ public class Period {
         this.endDate = endDate;
         this.position = position;
         this.content = content;
+    }
+
+    public Period(int startYear, int startMonth,
+                  int endYear, int endMonth, String position, String content) {
+        this(DateUtil.getDate(startYear, startMonth),
+                DateUtil.getDate(endYear, endMonth),
+                position, content);
     }
 
     public Date getStartDate() {

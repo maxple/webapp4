@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  * User: gkislin
  * Date: 04.07.2014
  */
-abstract public class AbstractStorage implements IStorage {
+abstract public class AbstractStorage<C> implements IStorage {
     public static final Logger LOGGER = Logger.getLogger(MapStorage.class.getName());
 
     @Override
@@ -21,20 +21,25 @@ abstract public class AbstractStorage implements IStorage {
         doClear();
     }
 
+    protected abstract C getCtx(String uuid);
+
     protected abstract void doClear();
+
+    protected abstract boolean exist(C ctx);
 
     protected abstract boolean exist(String uuid);
 
     @Override
     public void save(Resume r) {
         LOGGER.info("Save resume with uuid=" + r.getUuid());
-        if (exist(r.getUuid())) {
+        C ctx = getCtx(r.getUuid());
+        if (exist(ctx)) {
             throw new WebAppException("Resume " + r.getUuid() + "already exist", r);
         }
-        doSave(r);
+        doSave(ctx, r);
     }
 
-    protected abstract void doSave(Resume r);
+    protected abstract void doSave(C ctx, Resume r);
 
     @Override
     public void update(Resume r) {

@@ -11,9 +11,14 @@ import java.util.Map;
  * User: gkislin
  * Date: 24.06.2014
  */
-public class MapStorage extends AbstractStorage {
+public class MapStorage extends AbstractStorage<String> {
 
     private Map<String, Resume> MAP = new HashMap<>();
+
+    @Override
+    protected String getCtx(String uuid) {
+        return uuid;
+    }
 
     @Override
     public void doClear() {
@@ -26,8 +31,8 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public void doSave(Resume r) {
-        MAP.put(r.getUuid(), r);
+    public void doSave(String uuid, Resume r) {
+        MAP.put(uuid, r);
     }
 
     @Override

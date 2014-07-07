@@ -3,17 +3,16 @@ package webapp.storage;
 import webapp.WebAppException;
 import webapp.model.Resume;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Collection;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * User: gkislin
  * Date: 04.07.2014
  */
-abstract public class FileStorage implements IStorage {
+abstract public class FileStorage extends AbstractStorage<File> {
     private File dir;
 
     public FileStorage(String path) {
@@ -23,7 +22,7 @@ abstract public class FileStorage implements IStorage {
         }
     }
 
-    protected void write(File file, Resume resume){
+    protected void write(File file, Resume resume) {
         try {
             doWrite(new FileOutputStream(file), resume);
         } catch (IOException e) {
@@ -31,10 +30,11 @@ abstract public class FileStorage implements IStorage {
         }
     }
 
-    protected abstract void doWrite(FileOutputStream fos, Resume resume) throws IOException;
-    protected abstract Resume doRead(FileInputStream fis) throws IOException;
+    protected abstract void doWrite(OutputStream fos, Resume resume) throws IOException;
 
-    protected Resume read(File file){
+    protected abstract Resume doRead(InputStream fis) throws IOException;
+
+    protected Resume read(File file) {
         try {
             Resume r = doRead(new FileInputStream(file));
             r.setUuid(file.getName());
@@ -45,7 +45,7 @@ abstract public class FileStorage implements IStorage {
     }
 
     @Override
-    public void clear() {
+    public void doClear() {
         File[] files = dir.listFiles();
         if (files == null) return;
         for (File file : files) {
@@ -56,11 +56,23 @@ abstract public class FileStorage implements IStorage {
     }
 
     @Override
-    public void save(Resume r) {
-        File file = getFile(r.getUuid());
-        if (file.exists()) {
-            //TODO
-        }
+    protected boolean exist(String uuid) {
+        File file = getFile(uuid);
+        return file.exists();
+    }
+
+    @Override
+    protected boolean exist(File file) {
+        return file.exists();
+    }
+
+    @Override
+    protected File getCtx(String uuid) {
+        return getFile(uuid);
+    }
+
+    @Override
+    public void doSave(File file, Resume r) {
         try {
             file.createNewFile();
         } catch (IOException e) {
@@ -74,37 +86,38 @@ abstract public class FileStorage implements IStorage {
     }
 
     @Override
-    public void update(Resume r) {
+    public void doUpdate(Resume r) {
         File file = getFile(r.getUuid());
-        //TODO
         write(file, r);
     }
 
     @Override
-    public Resume load(String uuid) {
+    public Resume doLoad(String uuid) {
         File file = getFile(uuid);
-        //TODO
         return read(file);
     }
 
     @Override
-    public void delete(String uuid) {
+    public void doDelete(String uuid) {
         File file = getFile(uuid);
-        //TODO
-        if(file.delete()){
+        if (!file.delete()) {
             throw new WebAppException("File " + file.getAbsolutePath() + " cannot be deleted");
         }
     }
 
     @Override
-    public Collection<Resume> getAllSorted() {
-        // TODO
-        return null;
+    public List<Resume> doGetAll() {
+        File[] files = dir.listFiles();
+        if (files == null) return Collections.emptyList();
+        List<Resume> list = new ArrayList<>(files.length);
+        for (File file : files) {
+            list.add(read(file));
+        }
+        return list;
     }
 
     @Override
     public int size() {
-        // TODO;
-        return 0;
+        return dir.list().length;
     }
 }

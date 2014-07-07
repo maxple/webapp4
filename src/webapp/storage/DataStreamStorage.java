@@ -19,7 +19,7 @@ public class DataStreamStorage extends FileStorage {
     }
 
     @Override
-    protected void doWrite(FileOutputStream fos, Resume resume) throws IOException {
+    protected void doWrite(OutputStream fos, Resume resume) throws IOException {
         try (DataOutputStream dos = new DataOutputStream(fos)) {
             writeStr(dos, resume.getFullName());
             writeStr(dos, resume.getLocation());
@@ -65,7 +65,7 @@ public class DataStreamStorage extends FileStorage {
     }
 
     @Override
-    protected Resume doRead(FileInputStream fis) throws IOException {
+    protected Resume doRead(InputStream fis) throws IOException {
         Resume r = new Resume();
         try (DataInputStream dis = new DataInputStream(fis)) {
             r.setFullName(readStr(dis));

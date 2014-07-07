@@ -6,6 +6,6 @@ package webapp.storage;
  */
 public class DataStreamStorageTest extends StorageTest {
     static {
-        storage = new DataStreamStorage("D:\\doc\\gkislin\\project\\webapp4\\file_storage");
+        storage = new DataStreamStorage(STORAGE_DIR);
     }
 }

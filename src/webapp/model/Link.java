@@ -1,9 +1,13 @@
 package webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 /**
  * User: gkislin
  * Date: 07.02.14
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Link {
     public static final Link EMPTY = new Link();
 

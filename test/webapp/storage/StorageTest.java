@@ -4,10 +4,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import webapp.WebAppException;
-import webapp.model.ContactType;
-import webapp.model.Resume;
+import webapp.model.*;
 
 import java.util.Arrays;
+import java.util.Calendar;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -17,8 +17,9 @@ import static org.junit.Assert.assertEquals;
  * Date: 18.04.2014
  */
 public class StorageTest {
-    static IStorage storage;
 
+    static IStorage storage;
+    public static final String STORAGE_DIR = ".\\file_storage";
 
     private static Resume R1, R2, R3;
 
@@ -28,7 +29,7 @@ public class StorageTest {
         R1.addContact(ContactType.MAIL, "mail1@ya.ru");
         R1.addContact(ContactType.PHONE, "11111");
 
-/*
+
         R1.addSection(SectionType.ACHIEVEMENT, "Achivment11", "Achivment12");
         R1.addSection(SectionType.OBJECTIVE, "Objective1");
         R1.addSection(SectionType.EXPERIENCE,
@@ -36,7 +37,6 @@ public class StorageTest {
                         new Period(2005, Calendar.JANUARY, 2008, Calendar.DECEMBER, "position1", "content1"),
                         new Period(2001, Calendar.MARCH, 2005, Calendar.JANUARY,"position2", "content2")),
                 new Organization("Organization12", "Url11"));
-*/
 
         R2 = new Resume("fullName2", null);
         R2.addContact(ContactType.SKYPE, "skype2");
