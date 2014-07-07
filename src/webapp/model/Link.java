@@ -2,13 +2,16 @@ package webapp.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import java.io.Serializable;
 
 /**
  * User: gkislin
  * Date: 07.02.14
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Link {
+public class Link implements Serializable{
+    static final long serialVersionUID = 1L;
+
     public static final Link EMPTY = new Link();
 
     private String name;

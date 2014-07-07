@@ -3,8 +3,7 @@ package webapp.storage;
 import webapp.model.*;
 
 import java.io.*;
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 
 /**
  * User: gkislin
@@ -37,12 +36,11 @@ public class DataStreamStorage extends FileStorage {
 
             for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
                 Section section = entry.getValue();
-                String sectionClass = section.getClass().getSimpleName();
-                writeStr(dos, sectionClass);
-                writeStr(dos, entry.getKey().name());
+                SectionType type = entry.getKey();
+                writeStr(dos, type.name());
                 Collection sectionValues = section.getValues();
                 dos.writeInt(sectionValues.size());
-                if (TextSection.class.getSimpleName().equals(sectionClass)) {
+                if (type.getSectionClass() == SectionClass.TEXT) {
                     for (String val : (Collection<String>) sectionValues) {
                         writeStr(dos, val);
                     }
@@ -78,42 +76,26 @@ public class DataStreamStorage extends FileStorage {
 
             final int sectionsSize = dis.readInt();
             for (int i = 0; i < sectionsSize; i++) {
-                String sectionClass = readStr(dis);
-                boolean isTextSection = TextSection.class.getSimpleName().equals(sectionClass);
-                Section section = isTextSection ? new TextSection() : new OrganizationSection();
+
                 SectionType sectionType = SectionType.valueOf(readStr(dis));
+                Section section = sectionType.getSectionClass().create();
+
                 r.addSection(sectionType, section);
                 int sectionValuesSize = dis.readInt();
 
                 for (int j = 0; j < sectionValuesSize; j++) {
-                    if (isTextSection) {
+                    if (sectionType.getSectionClass() == SectionClass.TEXT) {
                         section.add(readStr(dis));
                     } else {
-                        // TODO
-/*
                         String name = readStr(dis);
                         String url = readStr(dis);
-                        periods = new ArrayList<>();
-
-                        periodsSize = dis.readInt();
-
+                        int periodsSize = dis.readInt();
+                        List<Period> periods = new ArrayList<>(periodsSize);
                         for (int k = 0; k < periodsSize; k++) {
-
-                            startYear = dis.readInt();
-                            startMonth = dis.readInt();
-                            endYear = dis.readInt();
-                            endMonth = dis.readInt();
-                            position = readStr(dis);
-                            content = readStr(dis);
-
-                            periods.add(new Period(startYear, startMonth, endYear, endMonth, position, content));
+                            periods.add(
+                                    new Period(new Date(dis.readLong()), new Date(dis.readLong()), readStr(dis), readStr(dis)));
                         }
-
-                        sectionOrganizationValues.add(new Organization(organizationName, organizationUrl, periods.toArray(new Period[periods.size()])));
-                        new Organization(
-                                ,
-                                readStr(dis), periods.toArray(new Period[periods.size()]))
-*/
+                        section.add(new Organization(name, url, periods));
                     }
                 }
             }

@@ -9,6 +9,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class OrganizationSection extends Section<Organization> {
+    static final long serialVersionUID = 1L;
+
+    public OrganizationSection() {
+    }
 
     public OrganizationSection(Organization... organizations) {
         super(organizations);
