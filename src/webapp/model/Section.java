@@ -13,6 +13,7 @@ public abstract class Section<T> implements Serializable {
     private Collection<T> values;
 
     protected Section() {
+        this.values = new LinkedList<>();
     }
 
     public Section(T[] values) {

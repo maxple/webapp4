@@ -4,28 +4,23 @@ import webapp.WebAppException;
 import webapp.model.Resume;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 /**
  * User: gkislin
  * Date: 24.06.2014
  */
-public class ArrayStorage extends AbstractStorage {
+public class ArrayStorage implements IStorage {
 
     private static final int NUMBER = 100;
     private final Resume[] ARRAY = new Resume[NUMBER];
 
-    public ArrayStorage() {
-        super(Logger.getLogger(ArrayStorage.class.getName()));
-    }
-
     @Override
-    public void doClear() {
+    public void clear() {
         Arrays.fill(ARRAY, null);
     }
 
     @Override
-    public void doSave(Resume r) {
+    public void save(Resume r) {
         // insert in first not null array element
         String uuid = r.getUuid();
         for (int i = 0; i < NUMBER; i++) {
@@ -44,7 +39,7 @@ public class ArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void doUpdate(Resume r) {
+    public void update(Resume r) {
         String uuid = r.getUuid();
         for (int i = 0; i < NUMBER; i++) {
             if (ARRAY[i] != null && ARRAY[i].getUuid().equals(uuid)) {
@@ -56,7 +51,7 @@ public class ArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume doLoad(String uuid) {
+    public Resume load(String uuid) {
         for (Resume r : ARRAY) {
             if (r != null && r.getUuid().equals(uuid)) return r;
         }
@@ -64,7 +59,7 @@ public class ArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void doDelete(String uuid) {
+    public void delete(String uuid) {
         for (int i = 0; i < NUMBER; i++) {
             if (ARRAY[i] != null && ARRAY[i].getUuid().equals(uuid)) {
                 ARRAY[i] = null;
@@ -76,18 +71,19 @@ public class ArrayStorage extends AbstractStorage {
 
     @Override
     // return all not null elements
-    public Collection<Resume> doGetAll() {
+    public Collection<Resume> getAllSorted() {
         List<Resume> list = new LinkedList<>();
         for (Resume r : ARRAY) {
             if (r != null) {
                 list.add(r);
             }
         }
+        Collections.sort(list);
         return list;
     }
 
     @Override
-    public int doGetSize() {
+    public int size() {
         return getAllSorted().size();
     }
 }

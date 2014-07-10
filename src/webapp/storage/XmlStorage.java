@@ -5,6 +5,7 @@ import webapp.util.JaxbParser;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Logger;
 
 /**
  * User: gkislin
@@ -14,7 +15,7 @@ public class XmlStorage extends FileStorage {
     private JaxbParser xmlParser;
 
     public XmlStorage(String path) {
-        super(path);
+        super(Logger.getLogger(XmlStorage.class.getName()), path);
         xmlParser = new JaxbParser(Resume.class, Organization.class, Link.class,
                 OrganizationSection.class, TextSection.class, Period.class);
     }

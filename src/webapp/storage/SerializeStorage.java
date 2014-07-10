@@ -4,14 +4,16 @@ import webapp.WebAppException;
 import webapp.model.Resume;
 
 import java.io.*;
+import java.util.logging.Logger;
 
 /**
  * User: gkislin
  * Date: 25.04.2014
  */
 public class SerializeStorage extends FileStorage {
+
     public SerializeStorage(String path) {
-        super(path);
+        super(Logger.getLogger(SerializeStorage.class.getName()), path);
     }
 
     @Override
