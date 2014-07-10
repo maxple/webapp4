@@ -27,16 +27,6 @@ abstract public class FileStorage extends AbstractStorage<File> {
     protected abstract void doWrite(OutputStream os, Resume resume) throws IOException;
     protected abstract Resume doRead(InputStream is) throws IOException;
 
-    @Override
-    protected File getCtx(String uuid) {
-        return new File(dir, uuid);
-    }
-
-    @Override
-    protected boolean exist(File file) {
-        return file.exists();
-    }
-
     protected void write(File file, Resume resume) {
         try {
             doWrite(new FileOutputStream(file), resume);
@@ -53,6 +43,16 @@ abstract public class FileStorage extends AbstractStorage<File> {
         } catch (IOException e) {
             throw new WebAppException("Couldn't read file " + file.getAbsolutePath(), e);
         }
+    }
+
+    @Override
+    protected File getCtx(String uuid) {
+        return new File(dir, uuid);
+    }
+
+    @Override
+    protected boolean exist(File file) {
+        return file.exists();
     }
 
     @Override
@@ -82,12 +82,12 @@ abstract public class FileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected Resume doLoad(File file, String uuid) {
+    protected Resume doLoad(File file) {
         return read(file);
     }
 
     @Override
-    protected void doDelete(File file, String uuid) {
+    protected void doDelete(File file) {
         if (!file.delete()) throw new WebAppException("File " + file.getAbsolutePath() + " can not be deleted");
     }
 

@@ -25,8 +25,8 @@ abstract public class AbstractStorage<C> implements IStorage {
     protected abstract void doClear();
     protected abstract void doSave(C ctx, Resume r);
     protected abstract void doUpdate(C ctx, Resume r);
-    protected abstract Resume doLoad(C ctx, String uuid);
-    protected abstract void doDelete(C ctx, String uuid);
+    protected abstract Resume doLoad(C ctx);
+    protected abstract void doDelete(C ctx);
     protected abstract List<Resume> doGetAll();
 
     public abstract int size();
@@ -58,7 +58,7 @@ abstract public class AbstractStorage<C> implements IStorage {
         LOGGER.info("Load resume with uuid=" + uuid);
         C ctx = getCtx(uuid);
         if (!exist(ctx)) throw new WebAppException("Resume " + uuid + "not exist", uuid);
-        return doLoad(ctx, uuid);
+        return doLoad(ctx);
     }
 
     @Override
@@ -66,7 +66,7 @@ abstract public class AbstractStorage<C> implements IStorage {
         LOGGER.info("Delete resume with uuid=" + uuid);
         C ctx = getCtx(uuid);
         if (!exist(ctx)) throw new WebAppException("Resume " + uuid + "not exist", uuid);
-        doDelete(ctx, uuid);
+        doDelete(ctx);
     }
 
     @Override

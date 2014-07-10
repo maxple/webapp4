@@ -42,16 +42,16 @@ public class MapStorage extends AbstractStorage<String> {
 
     @Override
     protected void doUpdate(String uuid, Resume r) {
-        MAP.put(r.getUuid(), r);
+        MAP.put(uuid, r);
     }
 
     @Override
-    protected Resume doLoad(String uuid_, String uuid) {
+    protected Resume doLoad(String uuid) {
         return MAP.get(uuid);
     }
 
     @Override
-    protected void doDelete(String uuid_, String uuid) {
+    protected void doDelete(String uuid) {
         MAP.remove(uuid);
     }
 
