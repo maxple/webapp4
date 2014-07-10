@@ -22,5 +22,5 @@ public interface IStorage {
 
     Collection<Resume> getAllSorted();
 
-    int getSize();
+    int size();
 }
