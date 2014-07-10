@@ -6,6 +6,6 @@ package webapp.storage;
  */
 public class SerializeStorageTest extends StorageTest {
     static {
-        storage = new SerializeStorage("D:\\doc\\gkislin\\project\\webapp4\\file_storage");
+        storage = new SerializeStorage(STORAGE_DIR);
     }
 }

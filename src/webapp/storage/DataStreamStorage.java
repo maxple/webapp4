@@ -4,6 +4,7 @@ import webapp.model.*;
 
 import java.io.*;
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * User: gkislin
@@ -14,12 +15,12 @@ public class DataStreamStorage extends FileStorage {
     private static final String NULL = "null";
 
     public DataStreamStorage(String path) {
-        super(path);
+        super(Logger.getLogger(DataStreamStorage.class.getName()), path);
     }
 
     @Override
-    protected void doWrite(OutputStream fos, Resume resume) throws IOException {
-        try (DataOutputStream dos = new DataOutputStream(fos)) {
+    protected void doWrite(OutputStream os, Resume resume) throws IOException {
+        try (DataOutputStream dos = new DataOutputStream(os)) {
             writeStr(dos, resume.getFullName());
             writeStr(dos, resume.getLocation());
 
@@ -63,9 +64,9 @@ public class DataStreamStorage extends FileStorage {
     }
 
     @Override
-    protected Resume doRead(InputStream fis) throws IOException {
+    protected Resume doRead(InputStream is) throws IOException {
         Resume r = new Resume();
-        try (DataInputStream dis = new DataInputStream(fis)) {
+        try (DataInputStream dis = new DataInputStream(is)) {
             r.setFullName(readStr(dis));
             r.setLocation(readStr(dis));
 

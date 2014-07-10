@@ -3,10 +3,7 @@ package webapp.storage;
 import webapp.WebAppException;
 import webapp.model.Resume;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * User: gkislin
@@ -76,17 +73,17 @@ public class ArrayStorage implements IStorage {
     // return all not null elements
     public Collection<Resume> getAllSorted() {
         List<Resume> list = new LinkedList<>();
-        Arrays.sort(ARRAY);
         for (Resume r : ARRAY) {
             if (r != null) {
                 list.add(r);
             }
         }
+        Collections.sort(list);
         return list;
     }
 
     @Override
     public int size() {
-        return ARRAY.length;
+        return getAllSorted().size();
     }
 }

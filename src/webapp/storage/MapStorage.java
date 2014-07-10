@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * User: gkislin
@@ -15,14 +16,13 @@ public class MapStorage extends AbstractStorage<String> {
 
     private Map<String, Resume> MAP = new HashMap<>();
 
-    @Override
-    protected String getCtx(String uuid) {
-        return uuid;
+    public MapStorage() {
+        super(Logger.getLogger(MapStorage.class.getName()));
     }
 
     @Override
-    public void doClear() {
-        MAP.clear();
+    protected String getCtx(String uuid) {
+        return uuid;
     }
 
     @Override
@@ -31,27 +31,32 @@ public class MapStorage extends AbstractStorage<String> {
     }
 
     @Override
-    public void doSave(String uuid, Resume r) {
+    protected void doClear() {
+        MAP.clear();
+    }
+
+    @Override
+    protected void doSave(String uuid, Resume r) {
         MAP.put(uuid, r);
     }
 
     @Override
-    public void doUpdate(Resume r) {
+    protected void doUpdate(String uuid, Resume r) {
         MAP.put(r.getUuid(), r);
     }
 
     @Override
-    public Resume doLoad(String uuid) {
+    protected Resume doLoad(String uuid_, String uuid) {
         return MAP.get(uuid);
     }
 
     @Override
-    public void doDelete(String uuid) {
+    protected void doDelete(String uuid_, String uuid) {
         MAP.remove(uuid);
     }
 
     @Override
-    public List<Resume> doGetAll() {
+    protected List<Resume> doGetAll() {
         return new ArrayList<>(MAP.values());
     }
 
