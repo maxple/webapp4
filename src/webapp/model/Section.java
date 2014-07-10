@@ -1,19 +1,22 @@
 package webapp.model;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * User: gkislin
  * Date: 20.06.2014
  */
-public abstract class Section<T> {
-
+public abstract class Section<T> implements Serializable {
     private Collection<T> values;
 
+    protected Section() {
+    }
+
     public Section(T[] values) {
-        this.values = new ArrayList<>(Arrays.asList(values));
+        this.values = new LinkedList<>(Arrays.asList(values));
     }
 
     public void add(T value) {
@@ -25,12 +28,16 @@ public abstract class Section<T> {
         return "Section( " + values +" )";
     }
 
+    public Collection<T> getContent() {
+        return values;
+    }
+
     public Collection<T> getValues() {
         return values;
     }
 
-    public void setValues(Collection<T> values) {
-        this.values = values;
+    public void setContent(Collection<T> content) {
+        this.values = content;
     }
 
     @Override
@@ -40,13 +47,13 @@ public abstract class Section<T> {
 
         Section section = (Section) o;
 
-        if (values != null ? !values.equals(section.values) : section.values != null) return false;
+        if (!values.equals(section.values)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return values != null ? values.hashCode() : 0;
+        return values.hashCode();
     }
 }

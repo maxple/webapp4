@@ -1,14 +1,20 @@
 package webapp.model;
 
-import java.util.ArrayList;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * User: gkislin
  * Date: 05.02.14
  */
-public class Organization {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Organization implements Serializable {
+    static final long serialVersionUID = 1L;
+
     public static final Organization EMPTY = new Organization();
 
     private Link link;
@@ -16,11 +22,16 @@ public class Organization {
 
     public Organization() {
         link = Link.EMPTY;
+        periods = new LinkedList<>();
     }
 
     public Organization(String name, String url, Period... periods) {
+        this(name, url, new LinkedList<>(Arrays.asList(periods)));
+    }
+
+    public Organization(String name, String url, Collection<Period> periods) {
         link = new Link(name, url);
-        this.periods = new ArrayList<>(Arrays.asList(periods));
+        this.periods = periods;
     }
 
     public void add(Period p) {
@@ -36,30 +47,30 @@ public class Organization {
     }
 
     @Override
-    public String toString() {
-        return "Organization{" +
-                "link=" + link +
-                ", periods=" + periods +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         Organization that = (Organization) o;
 
-        if (link != null ? !link.equals(that.link) : that.link != null) return false;
-        if (periods != null ? !periods.equals(that.periods) : that.periods != null) return false;
+        if (!link.equals(that.link)) return false;
+        if (!periods.equals(that.periods)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = link != null ? link.hashCode() : 0;
-        result = 31 * result + (periods != null ? periods.hashCode() : 0);
+        int result = link.hashCode();
+        result = 31 * result + periods.hashCode();
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Organization{" +
+                "link=" + link +
+                ", periods=" + periods +
+                '}';
     }
 }

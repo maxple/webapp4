@@ -6,6 +6,6 @@ package webapp.storage;
  */
 public class DataStreamStorageTest extends StorageTest {
     static {
-        storage = new DataStreamStorage("G:\\Maxim\\Workspaces\\Java\\Source\\webapp4\\file_storage"); //..\\..\\..\\..\\..\\file_storage");
+        storage = new DataStreamStorage(STORAGE_DIR);
     }
 }

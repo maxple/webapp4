@@ -2,6 +2,10 @@ package webapp.model;
 
 import webapp.util.Util;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.UUID;
@@ -10,7 +14,10 @@ import java.util.UUID;
  * User: gkislin
  * Date: 20.06.2014
  */
-public class Resume implements Comparable<Resume> {
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Resume implements Comparable<Resume>, Serializable {
+    static final long serialVersionUID = 1L;
 
     public static final Resume EMPTY = new Resume();
 
@@ -31,6 +38,10 @@ public class Resume implements Comparable<Resume> {
         this.uuid = uuid;
         this.fullName = fullName;
         setLocation(location);
+    }
+
+    public String getContact(ContactType type) {
+        return contacts.get(type);
     }
 
     public String getUuid() {
@@ -57,22 +68,6 @@ public class Resume implements Comparable<Resume> {
         this.location = Util.mask(location);
     }
 
-    public String getContact(ContactType type) {
-        return contacts.get(type);
-    }
-
-    public void addContact(ContactType type, String value) {
-        contacts.put(type, value);
-    }
-
-    public Map<ContactType, String> getContacts() {
-        return contacts;
-    }
-
-    public void addSection(SectionType type, Section s) {
-        sections.put(type, s);
-    }
-
     public void addSection(SectionType type, String... values) {
         addSection(type, new TextSection(values));
     }
@@ -81,12 +76,16 @@ public class Resume implements Comparable<Resume> {
         addSection(type, new OrganizationSection(values));
     }
 
+    public void addSection(SectionType type, Section s) {
+        sections.put(type, s);
+    }
+
     public Section getSection(SectionType type) {
         return sections.get(type);
     }
 
-    public Map<SectionType, Section> getSections() {
-        return sections;
+    public void addContact(ContactType type, String value) {
+        contacts.put(type, value);
     }
 
     @Override
@@ -130,5 +129,13 @@ public class Resume implements Comparable<Resume> {
     public int compareTo(Resume o) {
         int cmp = fullName.compareTo(o.fullName);
         return cmp == 0 ? uuid.compareTo(o.uuid) : cmp;
+    }
+
+    public Map<ContactType, String> getContacts() {
+        return contacts;
+    }
+
+    public Map<SectionType, Section> getSections() {
+        return sections;
     }
 }

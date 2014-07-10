@@ -1,20 +1,23 @@
 package webapp.storage;
 
-import webapp.WebAppException;
 import webapp.model.Resume;
 
-import java.util.*;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * User: gkislin
  * Date: 24.06.2014
  */
-public class MapStorage extends AbstractStorage {
+public class MapStorage extends AbstractStorage<String> {
+
     private Map<String, Resume> MAP = new HashMap<>();
 
-    public MapStorage() {
-        super(Logger.getLogger(MapStorage.class.getName()));
+    @Override
+    protected String getCtx(String uuid) {
+        return uuid;
     }
 
     @Override
@@ -23,45 +26,37 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public void doSave(Resume r) {
-        if (MAP.get(r.getUuid()) != null) {
-            throw new WebAppException("Resume " + r.getUuid() + "already exist", r);
-        }
-        MAP.put(r.getUuid(), r);
+    protected boolean exist(String uuid) {
+        return MAP.get(uuid) != null;
+    }
+
+    @Override
+    public void doSave(String uuid, Resume r) {
+        MAP.put(uuid, r);
     }
 
     @Override
     public void doUpdate(Resume r) {
-        if (MAP.get(r.getUuid()) == null) {
-            throw new WebAppException("Resume " + r.getUuid() + "not exist", r);
-        }
         MAP.put(r.getUuid(), r);
     }
 
     @Override
     public Resume doLoad(String uuid) {
-        Resume resume = MAP.get(uuid);
-        if (resume == null) {
-            throw new WebAppException("Resume " + uuid + "not exist", uuid);
-        }
-        return resume;
+        return MAP.get(uuid);
     }
 
     @Override
     public void doDelete(String uuid) {
-        if (MAP.get(uuid) == null) {
-            throw new WebAppException("Resume " + uuid + " not exist", uuid);
-        }
         MAP.remove(uuid);
     }
 
     @Override
-    public Collection<Resume> doGetAll() {
+    public List<Resume> doGetAll() {
         return new ArrayList<>(MAP.values());
     }
 
     @Override
-    public int doGetSize() {
+    public int size() {
         return MAP.size();
     }
 }
