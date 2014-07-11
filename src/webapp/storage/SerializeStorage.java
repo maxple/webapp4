@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class SerializeStorage extends FileStorage {
 
     public SerializeStorage(String path) {
-        super(Logger.getLogger(SerializeStorage.class.getName()), path);
+        super(path);
     }
 
     @Override

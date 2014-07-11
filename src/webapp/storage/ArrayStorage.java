@@ -15,10 +15,6 @@ public class ArrayStorage extends AbstractStorage<Integer> {
     private static final int NUMBER = 100;
     private final Resume[] ARRAY = new Resume[NUMBER];
 
-    public ArrayStorage() {
-        super(Logger.getLogger(ArrayStorage.class.getName()));
-    }
-
     @Override
     protected Integer getCtx(String uuid) {
 
@@ -81,6 +77,8 @@ public class ArrayStorage extends AbstractStorage<Integer> {
 
     @Override
     public int size() {
-        return doGetAll().size();
+        int size = 0;
+        for (Resume r : ARRAY) if (r != null) size++;
+        return size;
     }
 }

@@ -17,8 +17,7 @@ abstract public class FileStorage extends AbstractStorage<File> {
 
     private File dir;
 
-    public FileStorage(Logger logger, String path) {
-        super(logger);
+    public FileStorage(String path) {
         this.dir = new File(path);
         if (!dir.isDirectory() || !dir.canWrite())
             throw new IllegalArgumentException("'" + path + "' is not directory or is not writable");

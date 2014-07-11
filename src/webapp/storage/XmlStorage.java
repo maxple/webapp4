@@ -15,7 +15,7 @@ public class XmlStorage extends FileStorage {
     private JaxbParser xmlParser;
 
     public XmlStorage(String path) {
-        super(Logger.getLogger(XmlStorage.class.getName()), path);
+        super(path);
         xmlParser = new JaxbParser(Resume.class, Organization.class, Link.class,
                 OrganizationSection.class, TextSection.class, Period.class);
     }

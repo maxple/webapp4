@@ -15,7 +15,7 @@ public class DataStreamStorage extends FileStorage {
     private static final String NULL = "null";
 
     public DataStreamStorage(String path) {
-        super(Logger.getLogger(DataStreamStorage.class.getName()), path);
+        super(path);
     }
 
     @Override

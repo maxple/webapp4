@@ -14,11 +14,7 @@ import java.util.logging.Logger;
  */
 abstract public class AbstractStorage<C> implements IStorage {
 
-    protected Logger LOGGER;
-
-    protected AbstractStorage(Logger logger) {
-        this.LOGGER = logger;
-    }
+    protected Logger LOGGER = Logger.getLogger(getClass().getName());
 
     protected abstract C getCtx(String uuid);
     protected abstract boolean exist(C ctx);

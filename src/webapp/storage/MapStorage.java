@@ -16,10 +16,6 @@ public class MapStorage extends AbstractStorage<String> {
 
     private Map<String, Resume> MAP = new HashMap<>();
 
-    public MapStorage() {
-        super(Logger.getLogger(MapStorage.class.getName()));
-    }
-
     @Override
     protected String getCtx(String uuid) {
         return uuid;
