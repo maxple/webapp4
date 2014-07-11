@@ -19,7 +19,14 @@ import java.util.UUID;
 public class Resume implements Comparable<Resume>, Serializable {
     static final long serialVersionUID = 1L;
 
-    public static final Resume EMPTY = new Resume();
+    public static final Resume EMPTY;
+
+    static {
+        EMPTY = new Resume();
+        for (SectionType type : SectionType.values()) {
+            EMPTY.addSection(type, type.getSectionClass().getEmptySection());
+        }
+    }
 
     private String uuid;
     private String fullName;

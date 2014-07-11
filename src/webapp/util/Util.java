@@ -8,4 +8,9 @@ public class Util {
     public static String mask(String str) {
         return str == null ? "" : str;
     }
+
+    public static boolean isEmpty(String str) {
+        return str == null || str.trim().length() == 0;
+    }
+
 }

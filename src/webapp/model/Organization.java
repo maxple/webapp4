@@ -16,9 +16,12 @@ public class Organization implements Serializable {
     static final long serialVersionUID = 1L;
 
     public static final Organization EMPTY = new Organization();
+    static {
+       EMPTY.add(Period.EMPTY);
+    }
 
     private Link link;
-    private Collection<Period> periods;
+    private LinkedList<Period> periods;
 
     public Organization() {
         link = Link.EMPTY;
@@ -29,7 +32,7 @@ public class Organization implements Serializable {
         this(name, url, new LinkedList<>(Arrays.asList(periods)));
     }
 
-    public Organization(String name, String url, Collection<Period> periods) {
+    public Organization(String name, String url, LinkedList<Period> periods) {
         link = new Link(name, url);
         this.periods = periods;
     }
@@ -72,5 +75,9 @@ public class Organization implements Serializable {
                 "link=" + link +
                 ", periods=" + periods +
                 '}';
+    }
+
+    public void addFirstPeriod(Period period) {
+        periods.addFirst(period);
     }
 }

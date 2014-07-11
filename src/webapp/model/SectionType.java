@@ -5,7 +5,10 @@ package webapp.model;
  * Date: 31.01.14
  */
 public enum SectionType {
-    OBJECTIVE("Позиция", SectionClass.TEXT),
+    OBJECTIVE("Позиция", SectionClass.TEXT) {
+        @Override
+        public void addEmptyValue(Section s) {}
+    },
     ACHIEVEMENT("Достижения", SectionClass.TEXT),
     QUALIFICATIONS("Квалификация", SectionClass.TEXT),
     EXPERIENCE("Опыт работы", SectionClass.ORGANIZATION),
@@ -25,5 +28,9 @@ public enum SectionType {
 
     public String getTitle() {
         return title;
+    }
+
+    public void addEmptyValue(Section s) {
+        sectionClass.addEmptyValue(s);
     }
 }
