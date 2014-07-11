@@ -16,10 +16,11 @@ public class ResumeServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
+        String name = request.getParameter("name");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
         Writer w = response.getWriter();
-        w.write("Тест сервелет");
+        w.write("Тест сервелет: привет " + name);
         w.close();
     }
 }
