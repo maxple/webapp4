@@ -30,7 +30,7 @@ public class ArrayStorage extends AbstractStorage<Integer> {
                     uuidIndex = i;
                     break;
                 }
-            } else nullIndex = i;
+            } else if (nullIndex == -1) nullIndex = i;
         }
 
         if (uuidIndex == -1) {
