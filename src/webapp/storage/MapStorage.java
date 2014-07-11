@@ -21,37 +21,37 @@ public class MapStorage extends AbstractStorage<String> {
     }
 
     @Override
-    public void doClear() {
-        MAP.clear();
-    }
-
-    @Override
     protected boolean exist(String uuid) {
         return MAP.get(uuid) != null;
     }
 
     @Override
-    public void doSave(String uuid, Resume r) {
+    protected void doClear() {
+        MAP.clear();
+    }
+
+    @Override
+    protected void doSave(String uuid, Resume r) {
         MAP.put(uuid, r);
     }
 
     @Override
-    public void doUpdate(Resume r) {
-        MAP.put(r.getUuid(), r);
+    protected void doUpdate(String uuid, Resume r) {
+        MAP.put(uuid, r);
     }
 
     @Override
-    public Resume doLoad(String uuid) {
+    protected Resume doLoad(String uuid) {
         return MAP.get(uuid);
     }
 
     @Override
-    public void doDelete(String uuid) {
+    protected void doDelete(String uuid) {
         MAP.remove(uuid);
     }
 
     @Override
-    public List<Resume> doGetAll() {
+    protected List<Resume> doGetAll() {
         return new ArrayList<>(MAP.values());
     }
 

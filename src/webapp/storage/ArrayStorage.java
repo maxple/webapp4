@@ -4,7 +4,6 @@ import webapp.WebAppException;
 import webapp.model.Resume;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,26 +11,35 @@ import java.util.List;
  * User: gkislin
  * Date: 24.06.2014
  */
-public class ArrayStorage implements IStorage {
+public class ArrayStorage extends AbstractStorage<Integer> {
 
     private static final int NUMBER = 100;
     private final Resume[] ARRAY = new Resume[NUMBER];
 
     @Override
-    public void clear() {
+    protected Integer getCtx(String uuid) {
+        for (int i = 0; i < NUMBER; i++) {
+            if (ARRAY[i] != null) {
+                if (ARRAY[i].getUuid().equals(uuid)) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    protected boolean exist(Integer index) {
+        return index != -1;
+    }
+
+    @Override
+    public void doClear() {
         Arrays.fill(ARRAY, null);
     }
 
     @Override
-    public void save(Resume r) {
-        // insert in first not null array element
-        String uuid = r.getUuid();
-        for (int i = 0; i < NUMBER; i++) {
-            if (ARRAY[i] != null && ARRAY[i].getUuid().equals(uuid)) {
-                throw new WebAppException("Resume " + uuid + "already exist", r);
-            }
-        }
-
+    public void doSave(Integer index, Resume r) {
         for (int i = 0; i < NUMBER; i++) {
             if (ARRAY[i] == null) {
                 ARRAY[i] = r;
@@ -42,51 +50,32 @@ public class ArrayStorage implements IStorage {
     }
 
     @Override
-    public void update(Resume r) {
-        String uuid = r.getUuid();
-        for (int i = 0; i < NUMBER; i++) {
-            if (ARRAY[i] != null && ARRAY[i].getUuid().equals(uuid)) {
-                ARRAY[i] = r;
-                return;
-            }
-        }
-        throw new WebAppException("Resume " + r.getUuid() + "not exist", r);
+    public void doUpdate(Integer index, Resume r) {
+        ARRAY[index] = r;
     }
 
     @Override
-    public Resume load(String uuid) {
-        for (Resume r : ARRAY) {
-            if (r != null && r.getUuid().equals(uuid)) return r;
-        }
-        throw new WebAppException("Resume " + uuid + "not exist", uuid);
+    public Resume doLoad(Integer index) {
+        return ARRAY[index];
     }
 
     @Override
-    public void delete(String uuid) {
-        for (int i = 0; i < NUMBER; i++) {
-            if (ARRAY[i] != null && ARRAY[i].getUuid().equals(uuid)) {
-                ARRAY[i] = null;
-                return;
-            }
-        }
-        throw new WebAppException("Resume " + uuid + " not exist", uuid);
+    public void doDelete(Integer index) {
+        ARRAY[index] = null;
     }
 
     @Override
     // return all not null elements
-    public Collection<Resume> getAllSorted() {
+    public List<Resume> doGetAll() {
         List<Resume> list = new LinkedList<>();
-        Arrays.sort(ARRAY);
-        for (Resume r : ARRAY) {
-            if (r != null) {
-                list.add(r);
-            }
-        }
+        for (Resume r : ARRAY) if (r != null) list.add(r);
         return list;
     }
 
     @Override
     public int size() {
-        return ARRAY.length;
+        int size = 0;
+        for (Resume r : ARRAY) if (r != null) size++;
+        return size;
     }
 }
