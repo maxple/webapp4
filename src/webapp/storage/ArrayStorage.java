@@ -3,8 +3,9 @@ package webapp.storage;
 import webapp.WebAppException;
 import webapp.model.Resume;
 
-import java.util.*;
-import java.util.logging.Logger;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * User: gkislin
@@ -17,29 +18,19 @@ public class ArrayStorage extends AbstractStorage<Integer> {
 
     @Override
     protected Integer getCtx(String uuid) {
-
-        Integer uuidIndex = -1, nullIndex = -1;
-
         for (int i = 0; i < NUMBER; i++) {
             if (ARRAY[i] != null) {
                 if (ARRAY[i].getUuid().equals(uuid)) {
-                    uuidIndex = i;
-                    break;
+                    return i;
                 }
-            } else if (nullIndex == -1) nullIndex = i;
+            }
         }
-
-        if (uuidIndex == -1) {
-            if (nullIndex == -1) throw new WebAppException("Index is not found");
-            return nullIndex;
-        }
-
-        return uuidIndex;
+        return -1;
     }
 
     @Override
     protected boolean exist(Integer index) {
-        return ARRAY[index] != null;
+        return index != -1;
     }
 
     @Override
@@ -49,7 +40,13 @@ public class ArrayStorage extends AbstractStorage<Integer> {
 
     @Override
     public void doSave(Integer index, Resume r) {
-        ARRAY[index] = r;
+        for (int i = 0; i < NUMBER; i++) {
+            if (ARRAY[i] == null) {
+                ARRAY[i] = r;
+                return;
+            }
+        }
+        throw new WebAppException("Array is full");
     }
 
     @Override

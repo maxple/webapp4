@@ -40,6 +40,7 @@ public class DateUtil {
     }
 
     public static synchronized String format(Date date) {
+        if (date == null) return "";
         return DATE_FORMAT.format(date);
     }
 }

@@ -91,7 +91,7 @@ public class DataStreamStorage extends FileStorage {
                         String name = readStr(dis);
                         String url = readStr(dis);
                         int periodsSize = dis.readInt();
-                        List<Period> periods = new ArrayList<>(periodsSize);
+                        LinkedList<Period> periods = new LinkedList<>();
                         for (int k = 0; k < periodsSize; k++) {
                             periods.add(
                                     new Period(new Date(dis.readLong()), new Date(dis.readLong()), readStr(dis), readStr(dis)));
