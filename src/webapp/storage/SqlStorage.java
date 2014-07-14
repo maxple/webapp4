@@ -89,19 +89,21 @@ public class SqlStorage implements IStorage {
         }
 */
         // Strategy
-        Sql.execute("DELETE FROM RESUME WHERE uuid=?", new SqlExecutor<Void>() {
+        int cnt = Sql.execute("DELETE FROM RESUME WHERE uuid=?", new SqlExecutor<Integer>() {
             @Override
-            public Void execute(PreparedStatement ps) throws SQLException {
+            public Integer execute(PreparedStatement ps) throws SQLException {
                 ps.setString(1, uuid);
-                ps.execute();
-                return null;
+                return ps.executeUpdate();
             }
         });
+        if (cnt == 0) {
+            throw new WebAppException("Resume " + uuid + "not exist", uuid);
+        }
     }
 
     @Override
     public Collection<Resume> getAllSorted() {
-        return Sql.execute("SELECT r.uuid, r.full_name, r.location  FROM RESUME AS r ordered by r.full_name, r.uuid",
+        return Sql.execute("SELECT r.uuid, r.full_name, r.location  FROM RESUME AS r order by r.full_name, r.uuid",
                 new SqlExecutor<Collection<Resume>>() {
                     @Override
                     public Collection<Resume> execute(PreparedStatement st) throws SQLException {
