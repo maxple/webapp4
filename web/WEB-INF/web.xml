@@ -17,6 +17,7 @@
     <servlet>
         <servlet-name>resumeServlet</servlet-name>
         <servlet-class>webapp.web.ResumeServlet</servlet-class>
+        <load-on-startup>0</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>resumeServlet</servlet-name>

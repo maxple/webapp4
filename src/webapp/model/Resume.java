@@ -145,4 +145,8 @@ public class Resume implements Comparable<Resume>, Serializable {
     public Map<SectionType, Section> getSections() {
         return sections;
     }
+
+    public void createUuid() {
+        this.uuid = UUID.randomUUID().toString();
+    }
 }
