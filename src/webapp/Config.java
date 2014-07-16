@@ -11,7 +11,7 @@ import webapp.storage.XmlStorage;
  * Date: 26.02.14
  */
 public class Config {
-    public static final String DIR_STORAGE = "D:\\doc\\gkislin\\project\\webapp4\\file_storage";
+    public static final String DIR_STORAGE = "G:\\Maxim\\Workspaces\\Java\\Source\\webapp4\\file_storage";
 
     public static final IStorage DS_STORAGE = new DataStreamStorage(DIR_STORAGE);
 
