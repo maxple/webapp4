@@ -1,116 +1,133 @@
 <%@ page import="webapp.model.*" %>
-<%@ page import="webapp.util.DateUtil" %>
-<%@ page import="java.util.List" %>
+<%@ page import="webapp.util.Util" %>
 <%@ page import="java.util.Map" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<!DOCTYPE html>
 <html>
 <%
+
     Resume resume = (Resume) (request.getAttribute("resume"));
 %>
-
 <head>
     <link rel="stylesheet" href="css/style.css">
-    <STYLE type="text/css">
-        th, td {
-            padding: 4px 10px 4px 0;
-            vertical-align: top;
+    <title>Резюме ${resume.getFullName()}</title>
+    <script language="JavaScript">
+        function deleteSection(id) {
+            var item = document.getElementById(id);
+            item.parentNode.removeChild(item);
         }
-
-        tr {
-            border-bottom: 1px solid #DDDDDD;
-        }
-
-        table {
-            margin-bottom: 1.4em;
-        }
-
-        table {
-            border-collapse: collapse;
-            border-spacing: 0;
-        }
-    </STYLE>
-    <title>Резюме <%=resume.getFullName()%>
-    </title>
+    </script>
 </head>
 <body>
+<header>Резюме ${resume.getFullName()}
+</header>
 <section>
-
-    <h2>${resume.getFullName()}</h2>
-    Проживание: ${resume.getLocation()}
-    <p>
-            <%
-    for (ContactType type: resume.getContacts().keySet()){
-        out.println(type.toHtml(resume.getContact(type))+"<br>");
+    <form id="resume" method="post" action="resume" enctype="application/x-www-form-urlencoded">
+        <input type="hidden" name="uuid" value="${resume.getUuid()}">
+        <dl>
+            <dt>Имя:</dt>
+            <dd><input type="text" name="name" size=50 value="${resume.getFullName()}"></dd>
+        </dl>
+        <dl>
+            <dt>Проживание:</dt>
+            <dd><input type="text" name="location" size=50 value="${resume.getLocation()}"></dd>
+        </dl>
+        <h3>Контакты:</h3>
+<%
+    for (ContactType type : ContactType.values()) {
+%>
+        <dl>
+            <dt><%=type.getTitle()%>:</dt>
+            <dd><input type="text" name="<%=type.name()%>" size=30 value="<%=Util.mask(resume.getContact(type))%>">
+            </dd>
+        </dl>
+<%
     }
-    %>
+%>
+        <h3>Разделы:</h3>
+<%
+    int itemNum = 0;
 
-    <p>
-    <table cellpadding="8">
-        <% for (Map.Entry<SectionType, Section> entry : resume.getSections().entrySet()) {
-            SectionType type = entry.getKey();
+    for (Map.Entry<SectionType, Section> e : resume.getSections().entrySet()) {
+        SectionType type = e.getKey();
+        Section s = e.getValue();
+%>
+        <h4><%=type.getTitle()%></h4>
+
+<%
+        for (Object item : s.getValues()) {
+            itemNum++;
             switch (type) {
-                case ACHIEVEMENT:
                 case OBJECTIVE:
+                case ACHIEVEMENT:
                 case QUALIFICATIONS:
-                    List<String> items = (List<String>) entry.getValue().getValues();
-        %>
-        <tr>
-            <td><h3><%=type.getTitle()%>
-            </h3></td>
-            <td>
-                <%
-                    if (items.size() == 1) {
-                        if (type == SectionType.OBJECTIVE) {
-                            out.println("<b>" + items.get(0) + "</b>");
+%>
+            <span id='s_<%=itemNum%>'>
+                <dl>
+                    <dd>
+                        <%
+                            if (type == SectionType.ACHIEVEMENT) {
+                        %>
+                        <textarea name="<%=type.name()%>" rows=5 cols=75><%=item%>
+                        </textarea>
+                        <%
                         } else {
-                            out.println(items.get(0));
-                        }
-                    } else {
-                        out.println("<ul>");
-                        for (String item : items) {
-                            out.println("<li>" + item + "</li>");
-                        }
-                        out.println("</ul>");
-                    }
-                %>
-            </td>
-        </tr>
-        <% break;
+                        %>
+                        <input type='text' name='<%=type.name()%>' size=80 value='<%=item%>'>
+                        <%
+                            }
+                        %>
+                        <span class="small"><a href="#"
+                                               onClick="deleteSection('s_<%=itemNum%>');return false;">Удалить</a></span>
+                    </dd>
+                    <br>
+                </dl>
+            </span>
+<%
+                break;
             case EXPERIENCE:
             case EDUCATION:
-        %>
-        <tr>
-            <td><h3><%=type.getTitle()%>
-            </h3></td>
-        </tr>
-        <%
-            for (Organization org : (List<Organization>) entry.getValue().getValues()) {
-        %>
-        <tr>
-            <td colspan="2"><br><a href="<%=org.getLink().getUrl()%>"><%=org.getLink().getName()%>
-            </a></td>
-        </tr>
-        <tr>
-                <%
-                    for(Period item: org.getPeriods()){
-        %>
-        <tr>
-            <td><%=DateUtil.format(item.getStartDate())%> - <%=DateUtil.format(item.getEndDate())%>
-            </td>
-            <td><%=item.getContent()%>
-            </td>
-        </tr>
-        <%
-                            }
-                        }
-                        break;
-                    default:
-                        throw new IllegalArgumentException("Type " + type + " is not implemented");
+                Organization org = (Organization) item;
+%>
+        <div id='s_<%=itemNum%>' class="section_item">
+            <dl>
+                <dt>Название учереждения:</dt>
+                <dd><input type="text" name='<%=type.name()%>' size=100 value="<%=org.getLink().getName()%>"></dd>
+            </dl>
+            <dl>
+                <dt>Сайт учереждения:</dt>
+                <dd><input type="text" name='<%=type.name()%>_orgUrl' size=100 value="<%=org.getLink().getUrl()%>">
+                </dd>
+            </dl>
+            <%
+                for(Period p: org.getPeriods()){
+                    itemNum++;
+            %>
+            <div id='s_<%=itemNum%>' class="section_item">
+
+                 <%--TODO add period--%>
+
+                <span class="small"><a href="#" onClick="deleteSection('s_<%=itemNum%>');return false;">Удалить</a></span>
+            </div>
+
+            <%
                 }
+            %>
+            <span class="small"><a href="#" onClick="deleteSection('s_<%=itemNum%>');return false;">Удалить</a></span>
+        </div>
+<%
+                break;
+
+            default:
+                throw new IllegalArgumentException("Type " + type + " is not implemented");
             }
-        %>
-    </table>
-    <button onclick="window.history.back()">ОК</button>
+        }
+    }
+%>
+        <br>
+        <button type="submit"><%-- onclick="return validate()--%>Сохранить</button>
+        <button onclick="window.history.back()">Отменить</button>
+    </form>
 </section>
 </body>
 </html>

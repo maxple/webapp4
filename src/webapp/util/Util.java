@@ -9,6 +9,10 @@ public class Util {
         return str == null ? "" : str;
     }
 
+    public static boolean isEmpty(Object[] array) {
+        return array == null || array.length == 0;
+    }
+
     public static boolean isEmpty(String str) {
         return str == null || str.trim().length() == 0;
     }
