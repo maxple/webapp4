@@ -13,7 +13,7 @@ public class HtmlUtil {
         return Util.isEmpty(value) ? EMPTY_TD : value;
     }
 
-    public static String getUtl(String url) {
+    public static String getUrl(String url) {
         if (Util.isEmpty(url)) return "";
         return (url.startsWith("http")) ? url : "http://" + url;
     }

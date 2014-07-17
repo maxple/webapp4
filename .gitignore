@@ -7,6 +7,4 @@ target
 *.iml
 atlassian-ide-plugin.xml
 file_storage
-
-
-
+lib

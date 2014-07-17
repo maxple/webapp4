@@ -34,11 +34,11 @@ public class SqlStorage implements IStorage {
         Sql.execute("INSERT INTO resume (uuid, full_name, location) VALUES(?,?,?)",
                 new SqlExecutor<Void>() {
                     @Override
-                    public Void execute(PreparedStatement st) throws SQLException {
-                        st.setString(1, r.getUuid());
-                        st.setString(2, r.getFullName());
-                        st.setString(3, r.getLocation());
-                        st.execute();
+                    public Void execute(PreparedStatement ps) throws SQLException {
+                        ps.setString(1, r.getUuid());
+                        ps.setString(2, r.getFullName());
+                        ps.setString(3, r.getLocation());
+                        ps.execute();
                         return null;
                     }
                 }
@@ -47,18 +47,16 @@ public class SqlStorage implements IStorage {
 
     @Override
     public void update(final Resume r) {
-        Sql.execute("UPDATE resume SET full_name=?, location=? WHERE uuid=?",
-                new SqlExecutor<Void>() {
+        if (Sql.execute("UPDATE resume SET full_name=?, location=? WHERE uuid=?",
+                new SqlExecutor<Integer>() {
                     @Override
-                    public Void execute(PreparedStatement st) throws SQLException {
-                        st.setString(1, r.getFullName());
-                        st.setString(2, r.getLocation());
-                        st.setString(3, r.getUuid());
-                        st.execute();
-                        return null;
+                    public Integer execute(PreparedStatement ps) throws SQLException {
+                        ps.setString(1, r.getFullName());
+                        ps.setString(2, r.getLocation());
+                        ps.setString(3, r.getUuid());
+                        return ps.executeUpdate();
                     }
-                });
-
+                }) == 0) throw new WebAppException("Resume " + r.getUuid() + "not exist", r.getUuid());
     }
 
     @Override
@@ -66,9 +64,9 @@ public class SqlStorage implements IStorage {
         return Sql.execute("SELECT r.uuid, r.full_name, r.location FROM RESUME AS r WHERE r.uuid=?",
                 new SqlExecutor<Resume>() {
                     @Override
-                    public Resume execute(PreparedStatement st) throws SQLException {
-                        st.setString(1, uuid);
-                        ResultSet rs = st.executeQuery();
+                    public Resume execute(PreparedStatement ps) throws SQLException {
+                        ps.setString(1, uuid);
+                        ResultSet rs = ps.executeQuery();
                         if (rs.next()) {
                             return new Resume(uuid, rs.getString("full_name"), rs.getString("location"));
                         }
@@ -89,16 +87,13 @@ public class SqlStorage implements IStorage {
         }
 */
         // Strategy
-        int cnt = Sql.execute("DELETE FROM RESUME WHERE uuid=?", new SqlExecutor<Integer>() {
+        if (Sql.execute("DELETE FROM RESUME WHERE uuid=?", new SqlExecutor<Integer>() {
             @Override
             public Integer execute(PreparedStatement ps) throws SQLException {
                 ps.setString(1, uuid);
                 return ps.executeUpdate();
             }
-        });
-        if (cnt == 0) {
-            throw new WebAppException("Resume " + uuid + "not exist", uuid);
-        }
+        }) == 0) throw new WebAppException("Resume " + uuid + "not exist", uuid);
     }
 
     @Override
@@ -106,9 +101,9 @@ public class SqlStorage implements IStorage {
         return Sql.execute("SELECT r.uuid, r.full_name, r.location  FROM RESUME AS r order by r.full_name, r.uuid",
                 new SqlExecutor<Collection<Resume>>() {
                     @Override
-                    public Collection<Resume> execute(PreparedStatement st) throws SQLException {
+                    public Collection<Resume> execute(PreparedStatement ps) throws SQLException {
                         List<Resume> res = new LinkedList<>();
-                        ResultSet rs = st.executeQuery();
+                        ResultSet rs = ps.executeQuery();
                         while (rs.next()) {
                             String uuid = rs.getString("uuid");
                             res.add(new Resume(uuid, rs.getString("full_name"), rs.getString("location")));
@@ -122,8 +117,8 @@ public class SqlStorage implements IStorage {
     public int size() {
         return Sql.execute("SELECT count(*) FROM RESUME", new SqlExecutor<Integer>() {
             @Override
-            public Integer execute(PreparedStatement st) throws SQLException {
-                ResultSet rs = st.executeQuery();
+            public Integer execute(PreparedStatement ps) throws SQLException {
+                ResultSet rs = ps.executeQuery();
                 rs.next();
                 return rs.getInt(1);
             }

@@ -8,5 +8,5 @@ import java.sql.SQLException;
  * Date: 05.03.14
  */
 public interface SqlExecutor<T> {
-    T execute(PreparedStatement st) throws SQLException;
+    T execute(PreparedStatement ps) throws SQLException;
 }
