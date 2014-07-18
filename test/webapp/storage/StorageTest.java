@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import webapp.WebAppException;
+import webapp.model.ContactType;
 import webapp.model.Resume;
 
 import java.util.Arrays;
@@ -24,11 +25,11 @@ public class StorageTest {
 
     @BeforeClass
     public static void beforeClass() {
-        R1 = new Resume("fullName1", "location1");
-/*
+        R1 = new Resume("Полное Имя1", "location1");
         R1.addContact(ContactType.MAIL, "mail1@ya.ru");
         R1.addContact(ContactType.PHONE, "11111");
 
+/*
 
         R1.addSection(SectionType.ACHIEVEMENT, "Achivment11", "Achivment12");
         R1.addSection(SectionType.OBJECTIVE, "Objective1");
@@ -39,13 +40,10 @@ public class StorageTest {
                 new Organization("Organization12", "Url11"));
 */
 
-        R2 = new Resume("fullName2", null);
-/*
+        R2 = new Resume("Полное Имя2", null);
         R2.addContact(ContactType.SKYPE, "skype2");
         R2.addContact(ContactType.PHONE, "22222");
-*/
-
-        R3 = new Resume("fullName3", null);
+        R3 = new Resume("Полное Имя3", null);
     }
 
     @Before
