@@ -3,6 +3,7 @@ package webapp.web;
 import webapp.Config;
 import webapp.model.*;
 import webapp.storage.IStorage;
+import webapp.util.DateUtil;
 import webapp.util.Util;
 
 import javax.servlet.ServletConfig;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -56,7 +58,21 @@ public class ResumeServlet extends HttpServlet {
                         for (int i = 0; i < values.length; i++) {
                             String orgName = values[i];
                             if (!Util.isEmpty(orgName)) {
-                                orgList.add(new Organization(orgName, orgUrls[i]));
+                                Organization org = new Organization(orgName, orgUrls[i]);
+                                orgList.add(org);
+
+                                String pfx = type.name() + i;
+                                String[] positions = request.getParameterValues(pfx + "_position");
+                                int length = positions.length;
+                                if (length != 0 && (length != 1 || !Util.isEmpty(positions[0]))) {
+                                    String[] contents = request.getParameterValues(pfx + "_content");
+                                    Date[] startDates = getDates(request, pfx + "_start");
+                                    Date[] endDates = getDates(request, pfx + "_end");
+                                    int start = Util.isEmpty(positions[0]) ? 1 : 0;
+                                    for (int j = start; j < length; j++) {
+                                        org.add(new Period(startDates[j], endDates[j], positions[j], contents[j]));
+                                    }
+                                }
                             }
                         }
                         r.addSection(type, orgList.toArray(new Organization[orgList.size()]));
@@ -72,6 +88,22 @@ public class ResumeServlet extends HttpServlet {
             Config.getStorage().update(r);
         }
         response.sendRedirect("list");
+    }
+
+    private static Date[] getDates(HttpServletRequest request, String pfx) {
+        String[] months = request.getParameterValues(pfx + "Month");
+        String[] years = request.getParameterValues(pfx + "Year");
+        Date[] dates = new Date[months.length];
+        for (int i = 0; i < months.length; i++) {
+            String month = months[i];
+            String year = years[i];
+            if (Util.isEmpty(month) || "-1".equals(month) || Util.isEmpty(year)) {
+                dates[i] = null;
+            } else {
+                dates[i] = DateUtil.getDate(Integer.valueOf(year), Integer.valueOf(month));
+            }
+        }
+        return dates;
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {

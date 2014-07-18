@@ -54,7 +54,9 @@ public class SqlStorage implements IStorage {
                         st.setString(1, r.getFullName());
                         st.setString(2, r.getLocation());
                         st.setString(3, r.getUuid());
-                        st.execute();
+                        if (st.executeUpdate() == 0) {
+                            throw new WebAppException("Resume " + r.getUuid() + "not exist", r.getUuid());
+                        }
                         return null;
                     }
                 });
@@ -89,16 +91,16 @@ public class SqlStorage implements IStorage {
         }
 */
         // Strategy
-        int cnt = Sql.execute("DELETE FROM RESUME WHERE uuid=?", new SqlExecutor<Integer>() {
+        Sql.execute("DELETE FROM RESUME WHERE uuid=?", new SqlExecutor<Void>() {
             @Override
-            public Integer execute(PreparedStatement ps) throws SQLException {
+            public Void execute(PreparedStatement ps) throws SQLException {
                 ps.setString(1, uuid);
-                return ps.executeUpdate();
+                if (ps.executeUpdate() == 0) {
+                    throw new WebAppException("Resume " + uuid + "not exist", uuid);
+                }
+                return null;
             }
         });
-        if (cnt == 0) {
-            throw new WebAppException("Resume " + uuid + "not exist", uuid);
-        }
     }
 
     @Override
