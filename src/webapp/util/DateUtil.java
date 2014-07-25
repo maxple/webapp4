@@ -10,6 +10,21 @@ import java.util.Date;
  */
 public class DateUtil {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/yyyy");
+    public static final String NOW = "сейчас";
+    public static final String[] MONTH = new String[]{
+            "", // empty value
+            "JANUARY",
+            "FEBRUARY",
+            "MARCH",
+            "APRIL",
+            "MAY",
+            "JUNE",
+            "JULY",
+            "AUGUST",
+            "SEPTEMBER",
+            "OCTOBER",
+            "NOVEMBER",
+            "DECEMBER"};
 
     private DateUtil() {
     }
@@ -40,7 +55,6 @@ public class DateUtil {
     }
 
     public static synchronized String format(Date date) {
-        if (date == null) return "";
-        return DATE_FORMAT.format(date);
+        return (date == null) ? NOW : DATE_FORMAT.format(date);
     }
 }
